@@ -2,7 +2,15 @@ import ArcGis from "./ArcGis";
 import { Item, User } from "./ItemTypes";
 import * as  searchTerms from "./searchTerms.json";
 
-export default class AppManager {
+export enum AppState {
+  APP,
+  MAP,
+  MAPIMAGELAYER,
+  FEATAURELAYER,
+  USER
+}
+
+export class AppManager {
 
   // TODO: Remove hard coded orgId.
   private orgId: string = "0123456789ABCDEF";
@@ -18,11 +26,24 @@ export default class AppManager {
     this.searchItems(callback, searchTerms.map);
   }
 
+  public searchApps = (callback: any): void => {
+    this.searchItems(callback, searchTerms.app);
+  }
+
+  public searchMapLayers = (callback: any): void => {
+    this.searchItems(callback, searchTerms.mapImageLayer);
+  }
+
+  public searchFeatureLayers = (callback: any): void => {
+    this.searchItems(callback, searchTerms.featureLayer);
+  }
+
   public searchUsers = (callback: any): void => {
     this.searchAllUsers().then((users: any) => {
       let allUsers = users
         .map((item: any) => new User(item.username, item.fullName, item.email, item.level, item.lastLogin))
-        .filter((user: User) => user.email !== "support@esri.com");
+        .filter((user: User) => user.email !== "support@esri.com")
+        .sort((u1: User, u2: User) => (u1.lastLogin > u2.lastLogin) ? -1 : ((u2.lastLogin > u1.lastLogin) ? 1 : 0));
       callback(allUsers);
     });
   }

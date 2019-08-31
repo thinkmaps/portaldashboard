@@ -51,27 +51,39 @@ $lightGrey: rgb(100,100,100);
 }
 
 
-.icon{
-  margin-right: 5px;
-}
+svg{margin-right: 5px;}
+
 
 .app{
   color: darken($c1, 10%);
 }
-
+.border-app{
+  border-color: $c1;
+}
 .map{
   color:darken($c2, 10%);
 }
-
+.border-map{
+  border-color:$c2;
+}
 .mapLayer{
   color:darken($c3, 10%);
+}
+.border-mapLayer{
+  border-color:$c3;
 }
 
 .featureLayer{
   color:darken($c4, 10%);
 }
+.border-featureLayer{
+  border-color: $c4;
+}
 
 .user{
   color:darken($c5, 10%);
+}
+.border-user{
+  border-color: $c5;
 }
 

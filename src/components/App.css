@@ -41,7 +41,7 @@
   text-overflow: ellipsis;
 }
 
-.icon {
+svg {
   margin-right: 5px;
 }
 
@@ -49,19 +49,39 @@
   color: #edd77e;
 }
 
+.border-app {
+  border-color: #f3e5ab;
+}
+
 .map {
   color: #b4c68c;
+}
+
+.border-map {
+  border-color: #cad7ae;
 }
 
 .mapLayer {
   color: #82b797;
 }
 
+.border-mapLayer {
+  border-color: #a2cab2;
+}
+
 .featureLayer {
   color: #58aba2;
 }
 
+.border-featureLayer {
+  border-color: #7abcb5;
+}
+
 .user {
   color: #1f7d92;
+}
+
+.border-user {
+  border-color: #28a1bc;
 }
 /*# sourceMappingURL=App.css.map */

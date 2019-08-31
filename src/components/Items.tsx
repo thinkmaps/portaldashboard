@@ -1,33 +1,33 @@
 import * as React from 'react';
 import CardColumns from 'react-bootstrap/CardColumns'
-import Card from 'react-bootstrap/Card'
-
-import { Item } from "../bo/ItemTypes";
+import ItemCard from "./ItemCard";
+import UserCard from "./UserCard";
+import { Item, User } from "../bo/ItemTypes";
+import { AppState } from "../bo/AppManager";
 
 export interface IItemsProps {
-  items: Array<Item>;
+  items: Array<Item | User>;
+  type: AppState;
 }
 
 export default class Items extends React.Component<IItemsProps> {
 
 
   private getCards = () => {
-    return this.props.items.map((item, index) => (
-      <Card key={index} className="bg-light">
-        <Card.Body>
-          <Card.Title><div className="h5 nw" title={item.title}>{item.title}</div> </Card.Title>
-          <Card.Text>
-            By: {item.owner}<br />
-            Created: {item.created.toLocaleDateString()}
-          </Card.Text>
-        </Card.Body>
-      </Card >))
+    return this.props.items.map((item: Item | User, index) => {
+      if (item instanceof Item) {
+        return <ItemCard item={item} key={index.toString()} type={this.props.type} />;
+      }
+      if (item instanceof User) {
+        return <UserCard item={item} key={index.toString()} />;
+      }
+    });
   }
 
   public render() {
-
     return (
-      <CardColumns column-count="5">{this.getCards()}</CardColumns>
+      <CardColumns> {this.getCards()}</CardColumns >
     );
   }
+
 }

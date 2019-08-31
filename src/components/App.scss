@@ -1,0 +1,77 @@
+$c1: rgb(243,229,171);
+$c2: rgb(202,215,174);
+$c3: rgb(162,202,178);
+$c4: rgb(122,188,181);
+$c5: rgb(40,161,188);
+$c6: rgb(0,130,190);
+
+$darkGrey: rgb(65,65,65);
+$mediumGrey: rgb(80,80,80);
+$lightGrey: rgb(100,100,100);
+
+.navBar{
+  background-color: $darkGrey;
+}
+
+.sidebar {
+  height: calc(100vh - 58px);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .3);
+  background-color: $mediumGrey;
+}
+
+.sidebar .nav-link{
+  color:rgba(255,255,255,0.7);
+}
+
+.sidebar .nav-link ative{
+  color:rgba(255,255,0,0.7); 
+}
+
+.main{
+  padding-top: 10px;
+}
+
+.counter{ 
+  margin-left: 10px;
+  text-align: left;
+  vertical-align: top;
+  font-size:5vw;
+  line-height: 15vh;
+  color: $c5;
+}
+
+.card-columns {
+  column-count: 4;
+}
+
+.nw{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.icon{
+  margin-right: 5px;
+}
+
+.app{
+  color: darken($c1, 10%);
+}
+
+.map{
+  color:darken($c2, 10%);
+}
+
+.mapLayer{
+  color:darken($c3, 10%);
+}
+
+.featureLayer{
+  color:darken($c4, 10%);
+}
+
+.user{
+  color:darken($c5, 10%);
+}
+

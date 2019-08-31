@@ -1,0 +1,67 @@
+.navBar {
+  background-color: #414141;
+}
+
+.sidebar {
+  height: calc(100vh - 58px);
+  -webkit-box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.3);
+          box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.3);
+  background-color: #505050;
+}
+
+.sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sidebar .nav-link ative {
+  color: rgba(255, 255, 0, 0.7);
+}
+
+.main {
+  padding-top: 10px;
+}
+
+.counter {
+  margin-left: 10px;
+  text-align: left;
+  vertical-align: top;
+  font-size: 5vw;
+  line-height: 15vh;
+  color: #28a1bc;
+}
+
+.card-columns {
+  -webkit-column-count: 4;
+          column-count: 4;
+}
+
+.nw {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icon {
+  margin-right: 5px;
+}
+
+.app {
+  color: #edd77e;
+}
+
+.map {
+  color: #b4c68c;
+}
+
+.mapLayer {
+  color: #82b797;
+}
+
+.featureLayer {
+  color: #58aba2;
+}
+
+.user {
+  color: #1f7d92;
+}
+/*# sourceMappingURL=App.css.map */

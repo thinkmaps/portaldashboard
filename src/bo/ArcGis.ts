@@ -16,6 +16,8 @@ export default class ArcGis {
   private searchUrl = (start: number, num: number, q: string) =>
     `${this.url}/sharing/rest/search?start=${start}&num=${num}&q=${q}`;
   private usersUrl = (orgId: string, start: number, num: number) => `${this.url}/sharing/rest/portals/${orgId}/users?start=${start}&num=${num}`;
+  private itemDepUrl = (itemId: string) => `${this.url}/sharing/rest/content/items/${itemId}/dependencies`;
+  private itemDepToUrl = (itemId: string) => `${this.url}/sharing/rest/content/items/${itemId}/dependencies/listDependentsTo`;
 
   constructor(url: string, username: string, password: string) {
     this.url = url;
@@ -27,19 +29,35 @@ export default class ArcGis {
   //public getItem = (id: string) => this._getWithToken(this.itemUrl(id));
   //public getItemData = (id: string) => this._getWithToken(this.itemDataUrl(id))
 
+  public itemDependencies = async (itemId: string) => {
+    return await this.getWithTokenAsJson(this.itemDepUrl(itemId));
+  }
+
+  public itemDependenciesTo = async (itemId: string) => {
+    let h = await this.getWithTokenAsHtml(this.itemDepToUrl(itemId));
+    let dom = document.createElement("html");
+    dom.innerHTML = h;
+    let pre = dom.getElementsByTagName("pre")[0];
+    let p = pre.innerHTML.replace(new RegExp("&nbsp;", 'g'), "");
+    p = p.replace(new RegExp("\n", 'g'), "");
+    p = p.replace(new RegExp('\"', 'g'), '"');
+    let j = `{ "list": ${p} }`;
+    return JSON.parse(j);
+  }
+
   public users = async (orgId: string, start: number, num: number) => {
-    return await this.getWithToken(this.usersUrl(orgId, start, num));
+    return await this.getWithTokenAsJson(this.usersUrl(orgId, start, num));
   }
 
   public search = async (start: number, num: number, term: string) => {
-    return await this.getWithToken(this.searchUrl(start, num, term));
+    return await this.getWithTokenAsJson(this.searchUrl(start, num, term));
   }
 
   public getItem = async (id: string) => {
-    return await this.getWithToken(this.itemUrl(id));
+    return await this.getWithTokenAsJson(this.itemUrl(id));
   }
 
-  private getWithToken = async (url: string) => {
+  private getWithTokenAsJson = async (url: string) => {
 
     const token = await this.getToken()
     url = await this.addJsonParameter(url)
@@ -49,9 +67,23 @@ export default class ArcGis {
 
   }
 
+  private getWithTokenAsHtml = async (url: string) => {
+
+    const token = await this.getToken()
+    url = await this.addHTMLParameter(url)
+    url = await this.addTokenParameter(url, token)
+    const result = await axios.get(url, { httpsAgent: this.httpsAgent })
+    return await result.data
+  }
+
   private addJsonParameter = (url: string) => {
     return this.addParameter(url, "f", "json")
   }
+
+  private addHTMLParameter = (url: string) => {
+    return this.addParameter(url, "f", "html")
+  }
+
   private addTokenParameter = (url: string, token: string) => {
     return this.addParameter(url, "token", token)
   }

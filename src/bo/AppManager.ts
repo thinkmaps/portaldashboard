@@ -22,6 +22,14 @@ export class AppManager {
 
   }
 
+  public getItemDependencies = (callback: any, itemId: string) => {
+    this.arcgis.itemDependencies(itemId).then(dep => callback(dep.list));
+  }
+
+  public getItemDependenciesTo = (callback: any, itemId: string) => {
+    this.arcgis.itemDependenciesTo(itemId).then(dep => callback(dep.list));
+  }
+
   public searchMaps = (callback: any): void => {
     this.searchItems(callback, searchTerms.map);
   }

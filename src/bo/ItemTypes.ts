@@ -1,12 +1,14 @@
 export class Item {
 
   public id: string;
+  public type: string;
   public title: string;
   public owner: string;
   public created: Date;
 
-  constructor(id: string, title: string, owner: string, created: string) {
+  constructor(id: string, type: string, title: string, owner: string, created: string) {
     this.id = id;
+    this.type = type;
     this.title = title;
     this.owner = owner;
     this.created = new Date(parseInt(created));

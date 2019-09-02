@@ -8,6 +8,7 @@ $c6: rgb(0,130,190);
 $darkGrey: rgb(65,65,65);
 $mediumGrey: rgb(80,80,80);
 $lightGrey: rgb(100,100,100);
+$veryLightGrey: rgb(200,200,200);
 
 .navBar{
   background-color: $darkGrey;
@@ -53,23 +54,30 @@ $lightGrey: rgb(100,100,100);
 
 svg{margin-right: 5px;}
 
+.codeBranch{
+  color:$veryLightGrey;
+  cursor: pointer;
+}
 
 .app{
   color: darken($c1, 10%);
 }
 .border-app{
+  border: solid 1px;
   border-color: $c1;
 }
 .map{
   color:darken($c2, 10%);
 }
 .border-map{
+  border: solid 1px;
   border-color:$c2;
 }
 .mapLayer{
   color:darken($c3, 10%);
 }
 .border-mapLayer{
+  border: solid 1px;
   border-color:$c3;
 }
 
@@ -77,6 +85,7 @@ svg{margin-right: 5px;}
   color:darken($c4, 10%);
 }
 .border-featureLayer{
+  border: solid 1px;
   border-color: $c4;
 }
 
@@ -87,3 +96,26 @@ svg{margin-right: 5px;}
   border-color: $c5;
 }
 
+td{
+  padding: 2px;
+}
+.dialog .ccenter{
+  margin:0 auto;
+}
+
+.dialog{  
+  width: 70%;
+  max-width: none !important;
+}
+
+.hundred{width: 250px;
+padding: 10px 5px 5px 10px;
+border-radius: .25rem;}
+
+td .border-danger{
+  width: 250px;
+  padding: 7px;
+  border-radius: .25rem;
+  border: solid 1px;
+  background-color: #f8d7da
+}

@@ -45,11 +45,17 @@ svg {
   margin-right: 5px;
 }
 
+.codeBranch {
+  color: #c8c8c8;
+  cursor: pointer;
+}
+
 .app {
   color: #edd77e;
 }
 
 .border-app {
+  border: solid 1px;
   border-color: #f3e5ab;
 }
 
@@ -58,6 +64,7 @@ svg {
 }
 
 .border-map {
+  border: solid 1px;
   border-color: #cad7ae;
 }
 
@@ -66,6 +73,7 @@ svg {
 }
 
 .border-mapLayer {
+  border: solid 1px;
   border-color: #a2cab2;
 }
 
@@ -74,6 +82,7 @@ svg {
 }
 
 .border-featureLayer {
+  border: solid 1px;
   border-color: #7abcb5;
 }
 
@@ -83,5 +92,32 @@ svg {
 
 .border-user {
   border-color: #28a1bc;
+}
+
+td {
+  padding: 2px;
+}
+
+.dialog .ccenter {
+  margin: 0 auto;
+}
+
+.dialog {
+  width: 70%;
+  max-width: none !important;
+}
+
+.hundred {
+  width: 250px;
+  padding: 10px 5px 5px 10px;
+  border-radius: .25rem;
+}
+
+td .border-danger {
+  width: 250px;
+  padding: 7px;
+  border-radius: .25rem;
+  border: solid 1px;
+  background-color: #f8d7da;
 }
 /*# sourceMappingURL=App.css.map */

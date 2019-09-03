@@ -26,7 +26,6 @@ export default class ArcGis {
   }
 
   //public self = () => this._getWithToken(this.selfUrl())
-  //public getItem = (id: string) => this._getWithToken(this.itemUrl(id));
   //public getItemData = (id: string) => this._getWithToken(this.itemDataUrl(id))
 
   public itemDependencies = async (itemId: string) => {
@@ -42,7 +41,7 @@ export default class ArcGis {
     p = p.replace(new RegExp("\n", 'g'), "");
     p = p.replace(new RegExp('\"', 'g'), '"');
     let j = `{ "list": ${p} }`;
-    return JSON.parse(j);
+    return await JSON.parse(j);
   }
 
   public users = async (orgId: string, start: number, num: number) => {

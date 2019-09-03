@@ -11,22 +11,22 @@ import { Item } from "../bo/ItemTypes";
 import { Dependency } from '../bo/Dependencies';
 import { AppManager, AppState } from "../bo/AppManager";
 
-export interface ItemCardProps {
+export interface IDepCardProps {
   key: string;
   item: Item;
   type: AppState;
 }
 
-export interface IItemCardState {
+export interface IDepCardState {
   show: boolean;
   dependencies: Array<Dependency>;
 }
 
-export default class ItemCard extends React.Component<ItemCardProps, IItemCardState> {
+export default class DepCard extends React.Component<IDepCardProps, IDepCardState> {
 
   private app: AppManager;
 
-  constructor(props: ItemCardProps) {
+  constructor(props: IDepCardProps) {
     super(props);
     this.app = new AppManager();
     this.state = { show: false, dependencies: [] }
@@ -66,21 +66,13 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
   public render() {
     return (
       <>
-        <Card className={"bg-light " + this.getBorderColor()}>
-          <Card.Body>
-            <Card.Title>
-              <div className="h5 nw" title={this.props.item.title}>
-                {this.getIcon()}
-                <a onClick={this.handleShow}><FontAwesomeIcon icon={faCodeBranch} className="codeBranch" /></a>
-                {this.props.item.title}
-              </div>
-            </Card.Title>
-            <Card.Text>
-              By: {this.props.item.owner}<br />
-              Created: {this.props.item.created.toLocaleDateString()}<br />
-            </Card.Text>
-          </Card.Body>
-        </ Card >
+        <div className={"bg-light hundred " + this.getBorderColor()}>
+          <div className="h6 nw" title={this.props.item.title}>
+            {this.getIcon()}
+            <a onClick={this.handleShow}><FontAwesomeIcon icon={faCodeBranch} className="codeBranch" /></a>
+            {this.props.item.title}
+          </div>
+        </div>
 
 
         <Modal show={this.state.show} onHide={this.handleClose} dialogClassName="dialog">
@@ -90,6 +82,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
           <Modal.Body className="ccenter">
             <Dependencies dependencies={this.state.dependencies} itemId={this.props.item.id} />
           </Modal.Body>
+
         </Modal>
 
       </>);

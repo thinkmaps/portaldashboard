@@ -1,5 +1,6 @@
 import ArcGis from "./ArcGis";
 import { Item, User } from "./ItemTypes";
+import { Dependency } from "./Dependencies";
 import * as  searchTerms from "./searchTerms.json";
 
 export enum AppState {
@@ -7,7 +8,8 @@ export enum AppState {
   MAP,
   MAPIMAGELAYER,
   FEATAURELAYER,
-  USER
+  USER,
+  UNKNOWN
 }
 
 export class AppManager {
@@ -15,11 +17,16 @@ export class AppManager {
   // TODO: Remove hard coded orgId.
   private orgId: string = "0123456789ABCDEF";
   private arcgis: ArcGis;
+  private dependencyIds: Set<string> = new Set();
 
   constructor() {
     // TODO: Remove hard coded credentials.
     this.arcgis = new ArcGis("https://vsdev1720.esri-de.com/portal", "stm4Portal", "Sonne1234");
 
+  }
+
+  public getItem = (callback: any, itemId: string) => {
+    this.arcgis.getItem(itemId).then(item => callback(item))
   }
 
   public getItemDependencies = (callback: any, itemId: string) => {
@@ -58,11 +65,75 @@ export class AppManager {
 
   private searchItems = (callback: any, term: string): void => {
     this.searchAllItems(term).then((items: any) => {
-      let allItems = items.map((item: any) => new Item(item.id, item.title, item.owner, item.created));
+      let allItems = items.map((item: any) => new Item(item.id, item.type, item.title, item.owner, item.created));
       callback(allItems);
     });
   }
 
+
+  private getDependencies = async (itemId: string) => {
+
+    let d: Dependency;
+
+    let item = await this.arcgis.getItem(itemId);
+
+    if (item.error) {
+      d = new Dependency(itemId, undefined);
+    } else {
+      d = new Dependency(itemId, new Item(item.id, item.type, item.title, item.owner, item.created));
+    }
+
+    let children = await this.arcgis.itemDependencies(itemId);
+    if (children.error) {
+      d.hasErrors = true;
+      d.message = children.error.message;
+      return await d;
+    }
+
+    d.addChildren(children.list);
+    let parents = await this.arcgis.itemDependenciesTo(itemId);
+    if (parents.error) {
+      d.hasErrors = true;
+      d.message = parents.error.message;
+      return await d;
+    }
+    d.addParents(parents.list);
+    return await d;
+  }
+
+  public getAllDependencies = async (callback: any, itemId: string, init: boolean, searchForChildren: boolean, searchForParents: boolean) => {
+
+    if (init) this.dependencyIds = new Set();
+
+    if (!this.dependencyIds.has(itemId)) {
+
+
+      this.dependencyIds.add(itemId);
+
+      let d = await this.getDependencies(itemId);
+
+      // if (d.item) {
+      //   console.log(itemId, d.item!.type, d.item!.title, searchForChildren);
+      // } else {
+      //   console.log(itemId, d.message);
+      // }
+
+
+      if (searchForChildren) {
+        d.children.forEach(async (childId: string) => {
+          return await this.getAllDependencies(callback, childId, false, true, false);
+        });
+      }
+      if (searchForParents) {
+        d.parents.forEach(async (parentId: string) => {
+          return await this.getAllDependencies(callback, parentId, false, false, true);
+        });
+      }
+      callback(d);
+      return
+    }
+    return
+  }
 
   private searchAllItems = async (term: string) => {
 

@@ -10,36 +10,87 @@ $mediumGrey: rgb(80,80,80);
 $lightGrey: rgb(100,100,100);
 $veryLightGrey: rgb(200,200,200);
 
-.navBar{
-  background-color: $darkGrey;
-}
-
 .sidebar {
-  height: calc(100vh - 58px);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .3);
-  background-color: $mediumGrey;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 48px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
-.sidebar .nav-link{
-  color:rgba(255,255,255,0.7);
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
-.sidebar .nav-link ative{
-  color:rgba(255,255,0,0.7); 
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+  .sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
 }
 
-.main{
-  padding-top: 10px;
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  color: white;
 }
 
-.counter{ 
-  margin-left: 10px;
-  text-align: left;
-  vertical-align: top;
-  font-size:5vw;
-  line-height: 15vh;
-  color: $c5;
+.sidebar .nav-link:hover .icon,
+.sidebar .nav-link.active .icon {
+  color: inherit;
 }
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+[role="main"] {
+  padding-top: 153px; /* Space for fixed navbar */
+}
+
+@media (min-width: 768px) {
+  [role="main"] {
+    padding-top: 68px; /* Space for fixed navbar */
+  }
+}
+
+/*
+ * Navbar
+ */
+
+.navbar-brand {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: 1rem;
+  background-color: rgba(0, 0, 0, .25);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+
+.navbar .form-control {
+  padding: .75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.form-control-dark {
+  color: white;
+  background-color: rgba(255, 255, 255, .1);
+  border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+  border-color: transparent;
+  background-color: $veryLightGrey;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
 
 .card-columns {
   column-count: 4;
@@ -118,4 +169,21 @@ td .border-danger{
   border-radius: .25rem;
   border: solid 1px;
   background-color: #f8d7da
+}
+
+.counterWrapper{
+  margin-top: 2rem;
+}
+
+.counter{
+  padding-left: 1rem;  
+}
+
+.large{
+  line-height: 90%;
+  font-size: 500%;
+}
+
+.transparent{
+  color: rgba(0,0,0,0);
 }

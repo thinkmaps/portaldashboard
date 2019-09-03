@@ -15,8 +15,8 @@ export default class SearchLink extends React.Component<ISearchLinkProps> {
   public render() {
     return (
       <Nav.Item>
-        <Nav.Link href="#" onClick={this.props.action}>
-          <FontAwesomeIcon icon={this.props.icon} className={this.props.css} /> {this.props.caption}
+        <Nav.Link href="#" onClick={this.props.action} className={this.props.css}>
+          <FontAwesomeIcon icon={this.props.icon} className={"icon " + this.props.css} /> {this.props.caption}
         </Nav.Link>
       </Nav.Item>
     );

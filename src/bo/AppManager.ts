@@ -8,7 +8,8 @@ export enum AppState {
   MAP,
   MAPIMAGELAYER,
   FEATAURELAYER,
-  USER
+  USER,
+  UNKNOWN
 }
 
 export class AppManager {

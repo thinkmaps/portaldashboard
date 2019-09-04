@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 
 import "./App.css"
 
@@ -78,8 +77,10 @@ export default class App extends React.Component<IAppProps, IAppState> {
           item.email.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1
         )
       }
+      return false;
     });
     this.setState({ filteredItems: f })
+
   }
 
   private setFilter = (e: string) => {

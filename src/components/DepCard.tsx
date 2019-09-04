@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
+import Badge from 'react-bootstrap/Badge';
 import Dependencies from "./Dependencies";
 
 // FontAwesome icons
@@ -13,7 +13,7 @@ import { AppManager, AppState } from "../bo/AppManager";
 
 export interface IDepCardProps {
   key: string;
-  item: Item;
+  depenedency: Dependency;
   type: AppState;
 }
 
@@ -45,7 +45,7 @@ export default class DepCard extends React.Component<IDepCardProps, IDepCardStat
   private handleClose = () => this.setState({ show: false });
   private handleShow = () => {
     this.setState({ dependencies: [] });
-    this.app.getAllDependencies(this.updateDependencies, this.props.item.id, true, true, true);
+    this.app.getAllDependencies(this.updateDependencies, this.props.depenedency.id, true, true, true);
     this.setState({ show: true })
   };
 
@@ -66,21 +66,23 @@ export default class DepCard extends React.Component<IDepCardProps, IDepCardStat
   public render() {
     return (
       <>
-        <div className={"bg-light hundred " + this.getBorderColor()}>
-          <div className="h6 nw" title={this.props.item.title}>
-            {this.getIcon()}
-            <a onClick={this.handleShow}><FontAwesomeIcon icon={faCodeBranch} className="codeBranch" /></a>
-            {this.props.item.title}
+        <div className="bbadgeC">
+          <Badge variant="secondary" className="bbadge" title={this.props.depenedency.parents.size + " parents / " + this.props.depenedency.children.size + " children"}>{this.props.depenedency.parents.size + "/" + this.props.depenedency.children.size}</Badge>
+          <div className={"bg-light hundred " + this.getBorderColor()}>
+            <div className="h6 nw" title={this.props.depenedency.item!.title}>
+              {this.getIcon()}
+              <a onClick={this.handleShow} href="#"><FontAwesomeIcon icon={faCodeBranch} className=" codeBranch" /></a>
+              {this.props.depenedency.item!.title}
+            </div>
           </div>
         </div>
-
 
         <Modal show={this.state.show} onHide={this.handleClose} dialogClassName="dialog">
           <Modal.Header closeButton className="bg-light">
             <Modal.Title>Dependencies:</Modal.Title>
           </Modal.Header>
           <Modal.Body className="ccenter">
-            <Dependencies dependencies={this.state.dependencies} itemId={this.props.item.id} />
+            <Dependencies dependencies={this.state.dependencies} itemId={this.props.depenedency.id} />
           </Modal.Body>
 
         </Modal>

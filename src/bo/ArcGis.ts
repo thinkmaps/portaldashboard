@@ -11,12 +11,13 @@ export default class ArcGis {
 
   //private selfUrl = () => `${this.url}/sharing/rest/portals/self`
   private itemUrl = (id: string) => `${this.url}/sharing/rest/content/items/${id}`;
-  //private itemDataUrl = (id: string) => `${this.url}/sharing/rest/content/items/${id}/data`;
+  private itemDataUrl = (id: string) => `${this.url}/sharing/rest/content/items/${id}/data`;
   private searchUrl = (start: number, num: number, q: string) =>
     `${this.url}/sharing/rest/search?start=${start}&num=${num}&q=${q}`;
   private usersUrl = (orgId: string, start: number, num: number) => `${this.url}/sharing/rest/portals/${orgId}/users?start=${start}&num=${num}`;
   private itemDepUrl = (itemId: string) => `${this.url}/sharing/rest/content/items/${itemId}/dependencies`;
   private itemDepToUrl = (itemId: string) => `${this.url}/sharing/rest/content/items/${itemId}/dependencies/listDependentsTo`;
+  private itemPortalUrl = (itemId: string) => `${this.url}/home/item.html?id=${itemId}`;
 
   constructor(url: string, username: string, password: string) {
     this.url = url;
@@ -26,6 +27,17 @@ export default class ArcGis {
 
   //public self = () => this._getWithToken(this.selfUrl())
   //public getItemData = (id: string) => this._getWithToken(this.itemDataUrl(id))
+  public getItemPortalUrl = async (itemId: string) => {
+    let token = await this.getToken();
+    let url = this.addJsonParameter(this.itemPortalUrl(itemId));
+    return await this.addTokenParameter(url, token);
+  }
+
+  public getItemDataUrl = async (itemId: string) => {
+    let token = await this.getToken();
+    let url = this.addJsonParameter(this.itemDataUrl(itemId));
+    return await this.addTokenParameter(url, token);
+  }
 
   public itemDependencies = async (itemId: string) => {
     return await this.getWithTokenAsJson(this.itemDepUrl(itemId));

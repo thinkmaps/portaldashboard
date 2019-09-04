@@ -21,6 +21,7 @@ export default class Items extends React.Component<IItemsProps> {
       if (item instanceof User) {
         return <UserCard item={item} key={index.toString()} />;
       }
+      return <div></div>
     });
   }
 

@@ -11,7 +11,6 @@ export enum AppState {
   USER,
   UNKNOWN
 }
-
 export class AppManager {
 
   // TODO: Remove hard coded orgId.
@@ -21,9 +20,14 @@ export class AppManager {
 
   constructor() {
     // TODO: Remove hard coded credentials.
-    this.arcgis = new ArcGis("https://vsdev1720.esri-de.com/portal", "stm4Portal", "Sonne1234");
 
+    // this.arcgis = new ArcGis("https://maps-q.kaufland.com/portal", "python_scriptuser", "X0MAhTHkzIC9BjMhJXPL");
+    this.arcgis = new ArcGis("https://vsdev1720.esri-de.com/portal", "portaladmin", "portaladmin1234");
+    // this.arcgis = new ArcGis("https://vsdev2426.esri-de.com/portal", "s.mendler", "Sonne1234");
   }
+
+  public getItemDataUrl = (itemId: string) => this.arcgis.getItemDataUrl(itemId);
+  public getItemPortalUrl = (itemId: string) => this.arcgis.getItemPortalUrl(itemId);
 
   public getItem = (callback: any, itemId: string) => {
     this.arcgis.getItem(itemId).then(item => callback(item))
@@ -63,13 +67,12 @@ export class AppManager {
     });
   }
 
-  private searchItems = (callback: any, term: string): void => {
+  private searchItems = (callback: any, term: string) => {
     this.searchAllItems(term).then((items: any) => {
       let allItems = items.map((item: any) => new Item(item.id, item.type, item.title, item.owner, item.created));
       callback(allItems);
     });
   }
-
 
   private getDependencies = async (itemId: string) => {
 
@@ -111,6 +114,11 @@ export class AppManager {
       this.dependencyIds.add(itemId);
 
       let d = await this.getDependencies(itemId);
+      if (d.item) {
+        console.table(d.item.title, d.parents.size, d.children.size);
+      }
+
+      console.log(d);
 
       // if (d.item) {
       //   console.log(itemId, d.item!.type, d.item!.title, searchForChildren);
@@ -159,7 +167,7 @@ export class AppManager {
     let all: Array<any> = []
 
     let first = await this.arcgis.users(this.orgId, 1, 1)
-    console.log(first);
+
     if (first && first.total) {
       for (let i = 1; i < parseInt(first.total); i = i + 25) {
         let next = await this.arcgis.users(this.orgId, i, 25)

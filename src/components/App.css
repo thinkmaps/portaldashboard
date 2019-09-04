@@ -104,6 +104,7 @@ svg {
 .codeBranch {
   color: #c8c8c8;
   cursor: pointer;
+  margin-right: .75rem;
 }
 
 .app {
@@ -192,5 +193,18 @@ td .border-danger {
 
 .transparent {
   color: rgba(0, 0, 0, 0);
+}
+
+.bbadge {
+  position: relative;
+  left: -.25rem;
+  top: 0.75rem;
+  font-size: 70%;
+  background-color: #c8c8c8;
+}
+
+.bbadgeC {
+  position: relative;
+  margin-top: -1.2rem;
 }
 /*# sourceMappingURL=App.css.map */

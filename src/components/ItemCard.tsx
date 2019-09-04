@@ -5,7 +5,7 @@ import Dependencies from "./Dependencies";
 
 // FontAwesome icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faCodeBranch } from '@fortawesome/free-solid-svg-icons'
+import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faCodeBranch, faCode, faEye } from '@fortawesome/free-solid-svg-icons'
 
 import { Item } from "../bo/ItemTypes";
 import { Dependency } from '../bo/Dependencies';
@@ -63,6 +63,18 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
     if (this.props.type === AppState.FEATAURELAYER) return "border-featureLayer"
   }
 
+  private openJsonUrl = () => {
+    this.app.getItemDataUrl(this.props.item.id).then(url =>
+      window.open(url, "_blank")
+    )
+  }
+
+  private openPortalUrl = () => {
+    this.app.getItemPortalUrl(this.props.item.id).then(url =>
+      window.open(url, "_blank")
+    )
+  }
+
   public render() {
     return (
       <>
@@ -71,7 +83,6 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
             <Card.Title>
               <div className="h5 nw" title={this.props.item.title}>
                 {this.getIcon()}
-                <a onClick={this.handleShow}><FontAwesomeIcon icon={faCodeBranch} className="codeBranch" /></a>
                 {this.props.item.title}
               </div>
             </Card.Title>
@@ -80,6 +91,11 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
               Created: {this.props.item.created.toLocaleDateString()}<br />
             </Card.Text>
           </Card.Body>
+          <Card.Footer>
+            <a onClick={this.handleShow}><FontAwesomeIcon icon={faCodeBranch} className="codeBranch" title="Show dependencies." /></a>
+            <a href="#" onClick={this.openJsonUrl}><FontAwesomeIcon icon={faCode} className="codeBranch" title="Show JSON." /></a>
+            <a href="#" onClick={this.openPortalUrl}><FontAwesomeIcon icon={faEye} className="codeBranch" title="Show Portal Item Details." /></a>
+          </Card.Footer>
         </ Card >
 
 

@@ -1,6 +1,5 @@
 import axios from "axios";
 import https from "https";
-import FormData from 'form-data'
 
 export default class ArcGis {
 

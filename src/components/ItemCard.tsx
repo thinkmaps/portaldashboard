@@ -32,7 +32,6 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
     this.state = { show: false, dependencies: [] }
   }
 
-  // const [show:boolean, setShow:any] = useState(false);
   private updateDependencies = (e: Dependency) => {
     // // 1. copy the current state
     const dependencies = [...this.state.dependencies];
@@ -43,9 +42,13 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
   }
 
   private handleClose = () => this.setState({ show: false });
+
   private handleShow = () => {
     this.setState({ dependencies: [] });
-    this.app.getAllDependencies(this.updateDependencies, this.props.item.id, true, true, true);
+
+    this.app.getAllDependencies(this.updateDependencies, this.props.item.id);
+
+
     this.setState({ show: true })
   };
 
@@ -70,9 +73,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
   }
 
   private openPortalUrl = () => {
-    this.app.getItemPortalUrl(this.props.item.id).then(url =>
-      window.open(url, "_blank")
-    )
+    window.open(this.app.getItemPortalUrl(this.props.item.id), "_blank")
   }
 
   public render() {
@@ -92,7 +93,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
             </Card.Text>
           </Card.Body>
           <Card.Footer>
-            <a onClick={this.handleShow}><FontAwesomeIcon icon={faCodeBranch} className="codeBranch" title="Show dependencies." /></a>
+            <a href="#" onClick={this.handleShow}><FontAwesomeIcon icon={faCodeBranch} className="codeBranch" title="Show dependencies." /></a>
             <a href="#" onClick={this.openJsonUrl}><FontAwesomeIcon icon={faCode} className="codeBranch" title="Show JSON." /></a>
             <a href="#" onClick={this.openPortalUrl}><FontAwesomeIcon icon={faEye} className="codeBranch" title="Show Portal Item Details." /></a>
           </Card.Footer>

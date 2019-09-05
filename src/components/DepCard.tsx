@@ -7,7 +7,6 @@ import Dependencies from "./Dependencies";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faCodeBranch } from '@fortawesome/free-solid-svg-icons'
 
-import { Item } from "../bo/ItemTypes";
 import { Dependency } from '../bo/Dependencies';
 import { AppManager, AppState } from "../bo/AppManager";
 
@@ -45,7 +44,7 @@ export default class DepCard extends React.Component<IDepCardProps, IDepCardStat
   private handleClose = () => this.setState({ show: false });
   private handleShow = () => {
     this.setState({ dependencies: [] });
-    this.app.getAllDependencies(this.updateDependencies, this.props.depenedency.id, true, true, true);
+    this.app.getAllDependencies(this.updateDependencies, this.props.depenedency.id);
     this.setState({ show: true })
   };
 
@@ -57,10 +56,10 @@ export default class DepCard extends React.Component<IDepCardProps, IDepCardStat
   }
 
   private getBorderColor = () => {
-    if (this.props.type === AppState.APP) return "border-app"
-    if (this.props.type === AppState.MAP) return "border-map"
-    if (this.props.type === AppState.MAPIMAGELAYER) return "border-mapLayer"
-    if (this.props.type === AppState.FEATAURELAYER) return "border-featureLayer"
+    if (this.props.type === AppState.APP) return "border-app";
+    if (this.props.type === AppState.MAP) return "border-map";
+    if (this.props.type === AppState.MAPIMAGELAYER) return "border-mapLayer";
+    if (this.props.type === AppState.FEATAURELAYER) return "border-featureLayer";
   }
 
   public render() {

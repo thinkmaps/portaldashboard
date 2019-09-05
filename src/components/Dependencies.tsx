@@ -7,11 +7,15 @@ import { faSkullCrossbones } from '@fortawesome/free-solid-svg-icons'
 
 import { Dependency } from '../bo/Dependencies';
 import { AppState } from "../bo/AppManager";
-import { Item } from "../bo/ItemTypes";
 
 export interface IDependenciesProps {
   itemId: string;
   dependencies: Array<Dependency>;
+}
+
+interface ITable {
+  title: string;
+  table: any;
 }
 
 export default class Dependencies extends React.Component<IDependenciesProps> {
@@ -35,39 +39,44 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
     return this.props.dependencies.filter(d => d.id === itemId)[0];
   }
 
-  private renderParents = (ids: Set<string>) => {
-    return Array.from(ids).map(id => this.getParents(id));
+  private renderDependElements = (ids: Set<string>, renderFunction: any) => {
+    return Array.from(ids)
+      // map id to dependency
+      .map(id => this.getDependencyFromDependencies(id))
+      // filter all valid in the moment availabe dependecies
+      .filter(d => d !== undefined)
+      // map to tables with title in order to sort them 
+      .map(d => renderFunction(d))
+      // sort dependencies by item title
+      .sort((t1, t2) => (t1.title > t2.title) ? 1 : ((t2.title > t1.title) ? -1 : 0))
+      // return only the HTML part
+      .map(t => t ? t.table : undefined);
   }
 
-  private renderChildren = (ids: Set<string>) => {
-    return Array.from(ids).map(id => this.getChildren(id));
-  }
-
-  private getParents = (id: string) => {
-    let dependency = this.getDependencyFromDependencies(id);
-    if (!dependency) return
-    return (<table key={this.getKey()}>
+  private getParents = (dependency: Dependency): ITable => {
+    let table = (<table key={this.getKey()}>
       <tbody>
         <tr>
-          <td align="right">{this.renderParents(dependency.parents)}</td>
+          <td align="right">{this.renderDependElements(dependency.parents, this.getParents)}</td>
           <td>{this.getDepCard(dependency)}</td>
         </tr>
       </tbody>
     </table>);
-
+    let title = dependency.item ? dependency.item.title : "";
+    return { title: title, table: table };
   }
 
-  private getChildren = (id: string) => {
-    let dependency = this.getDependencyFromDependencies(id);
-    if (!dependency) return
-    return (<table key={this.getKey()}>
+  private getChildren = (dependency: Dependency): ITable => {
+    let table = (<table key={this.getKey()}>
       <tbody>
         <tr>
           <td>{this.getDepCard(dependency)}</td>
-          <td>{this.renderChildren(dependency.children)}</td>
+          <td>{this.renderDependElements(dependency.children, this.getChildren)}</td>
         </tr>
       </tbody>
     </table>);
+    let title = dependency.item ? dependency.item.title : "";
+    return { title: title, table: table };
   }
 
   private getDepCard = (dependency: Dependency) => {
@@ -90,9 +99,9 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
     return (<table className="dialogTable">
       <tbody>
         <tr>
-          <td className="sub" align="right">{this.renderParents(root.parents)}</td>
+          <td className="sub" align="right">{this.renderDependElements(root.parents, this.getParents)}</td>
           <td className="main"><ItemCard item={root.item!} key={"dependencies" + this.counter} type={this.getAppState(root.item!.type)} /></td>
-          <td className="sub">{this.renderChildren(root.children)}</td>
+          <td className="sub">{this.renderDependElements(root.children, this.getChildren)}</td>
         </tr>
       </tbody>
     </table>);

@@ -15,7 +15,6 @@ import Items from "./Items";
 // Business objects
 import { AppState, AppManager } from "../bo/AppManager";
 import { Item, User } from "../bo/ItemTypes";
-import { Dependency } from '../bo/Dependencies';
 
 interface IAppProps { }
 interface IAppState {
@@ -23,7 +22,6 @@ interface IAppState {
   filteredItems: Array<Item | User>;
   filterTerm: string;
   type: AppState;
-  dependencies: Array<Dependency>;
 }
 
 export default class App extends React.Component<IAppProps, IAppState> {
@@ -33,7 +31,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
   constructor(props: IAppProps) {
     super(props);
-    this.state = { items: [], filteredItems: [], filterTerm: "", type: AppState.UNKNOWN, dependencies: [] };
+    this.state = { items: [], filteredItems: [], filterTerm: "", type: AppState.UNKNOWN };
     this.app = new AppManager();
   }
 

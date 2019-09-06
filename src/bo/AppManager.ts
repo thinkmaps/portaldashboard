@@ -22,8 +22,8 @@ export class AppManager {
   constructor() {
     // TODO: Remove hard coded credentials.
 
-    this.arcgis = new ArcGis("https://maps-q.kaufland.com/portal", "python_scriptuser", "X0MAhTHkzIC9BjMhJXPL");
-    // this.arcgis = new ArcGis("https://vsdev1720.esri-de.com/portal", "portaladmin", "portaladmin1234");
+    // this.arcgis = new ArcGis("https://maps-q.kaufland.com/portal", "python_scriptuser", "X0MAhTHkzIC9BjMhJXPL");
+    this.arcgis = new ArcGis("https://vsdev1720.esri-de.com/portal", "portaladmin", "portaladmin1234");
     // this.arcgis = new ArcGis("https://vsdev2426.esri-de.com/portal", "s.mendler", "Sonne1234");
 
     this.dependencyManager = new DependencyManager(this.arcgis);

@@ -177,6 +177,10 @@ export class ArcGis {
       formData
     )
     this.token = repsonse.data.token;
+
+    // Renew token after 55 minutes
+    window.setInterval(() => { this.token = undefined; console.log("Token reset.") }, 55 * 60 * 60 * 1000);
+
     return await repsonse.data.token
   }
 }

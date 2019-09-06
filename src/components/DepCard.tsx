@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Badge from 'react-bootstrap/Badge';
+import Button from 'react-bootstrap/Button';
 import Dependencies from "./Dependencies";
 
 // FontAwesome icons
@@ -70,7 +71,7 @@ export default class DepCard extends React.Component<IDepCardProps, IDepCardStat
           <div className={"bg-light hundred " + this.getBorderColor()}>
             <div className="h6 nw" title={this.props.depenedency.item!.title}>
               {this.getIcon()}
-              <a onClick={this.handleShow} href="#"><FontAwesomeIcon icon={faCodeBranch} className=" codeBranch" /></a>
+              <Button onClick={this.handleShow} className="linkButton"><FontAwesomeIcon icon={faCodeBranch} className=" codeBranch" /></Button>
               {this.props.depenedency.item!.title}
             </div>
           </div>

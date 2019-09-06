@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import Dependencies from "./Dependencies";
 
 // FontAwesome icons
@@ -93,9 +94,9 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
             </Card.Text>
           </Card.Body>
           <Card.Footer>
-            <a href="#" onClick={this.handleShow}><FontAwesomeIcon icon={faCodeBranch} className="codeBranch" title="Show dependencies." /></a>
-            <a href="#" onClick={this.openJsonUrl}><FontAwesomeIcon icon={faCode} className="codeBranch" title="Show JSON." /></a>
-            <a href="#" onClick={this.openPortalUrl}><FontAwesomeIcon icon={faEye} className="codeBranch" title="Show Portal Item Details." /></a>
+            <Button onClick={this.handleShow} className="linkButton"><FontAwesomeIcon icon={faCodeBranch} className="codeBranch" title="Show dependencies." /></Button>
+            <Button onClick={this.openJsonUrl} className="linkButton"><FontAwesomeIcon icon={faCode} className="codeBranch" title="Show JSON." /></Button>
+            <Button onClick={this.openPortalUrl} className="linkButton"><FontAwesomeIcon icon={faEye} className="codeBranch" title="Show Portal Item Details." /></Button>
           </Card.Footer>
         </ Card >
 

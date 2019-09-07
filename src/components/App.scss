@@ -1,9 +1,11 @@
+$c0: rgb(253,239,191);
 $c1: rgb(243,229,171);
 $c2: rgb(202,215,174);
 $c3: rgb(162,202,178);
 $c4: rgb(122,188,181);
 $c5: rgb(40,161,188);
 $c6: rgb(0,130,190);
+
 
 $darkGrey: rgb(65,65,65);
 $mediumGrey: rgb(80,80,80);
@@ -148,6 +150,13 @@ svg{margin-right: 5px;}
   border-color: $c5;
 }
 
+.server{
+  color:darken($c0, 10%);
+}
+.border-server{
+  border-color: $c0;
+}
+
 td{
   padding: 2px;
 }
@@ -189,7 +198,7 @@ td .border-danger{
   color: rgba(0,0,0,0);
 }
 
-.bbadge{
+.badgeContainer{
   position: relative;
   left: -.25rem;
   top: 0.75rem;
@@ -198,7 +207,7 @@ td .border-danger{
   
 }
 
-.bbadgeC{
+.badgeContainerC{
   position: relative;
   margin-top: -1.2rem;
 }

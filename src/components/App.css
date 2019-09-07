@@ -151,6 +151,14 @@ svg {
   border-color: #28a1bc;
 }
 
+.server {
+  color: #fbe38e;
+}
+
+.border-server {
+  border-color: #fdefbf;
+}
+
 td {
   padding: 2px;
 }
@@ -195,7 +203,7 @@ td .border-danger {
   color: rgba(0, 0, 0, 0);
 }
 
-.bbadge {
+.badgeContainer {
   position: relative;
   left: -.25rem;
   top: 0.75rem;
@@ -203,7 +211,7 @@ td .border-danger {
   background-color: #c8c8c8;
 }
 
-.bbadgeC {
+.badgeContainerC {
   position: relative;
   margin-top: -1.2rem;
 }

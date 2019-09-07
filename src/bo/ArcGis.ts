@@ -29,6 +29,11 @@ export class ArcGis {
   private password: string;
   private token: string | undefined = undefined;
 
+  // https://developers.arcgis.com/rest/users-groups-and-items/servers.htm
+  private serversUrl = (orgId: string) => `${this.url}/sharing/rest/portals/${orgId}/servers`;
+
+
+
   //private selfUrl = () => `${this.url}/sharing/rest/portals/self`
   private itemUrl = (id: string) => `${this.url}/sharing/rest/content/items/${id}`;
   private itemDataUrl = (id: string) => `${this.url}/sharing/rest/content/items/${id}/data`;
@@ -42,6 +47,10 @@ export class ArcGis {
     this.url = url;
     this.username = username;
     this.password = password;
+  }
+
+  public servers = async (orgId: string) => {
+    return await this.getWithTokenAsJson(this.serversUrl(orgId));
   }
 
   // #region Dependencies

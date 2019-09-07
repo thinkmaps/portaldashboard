@@ -48,12 +48,16 @@ export class AppManager {
     return this.dependencyManager.getAllDependencies(callback, itemId, true, true, true);
   }
 
-  public searchMaps = (callback: any): void => {
-    this.searchItems(callback, searchTerms.map);
+  public searchServer = (callback: any): void => {
+    this.arcgis.servers(this.orgId).then(s => callback(s.servers));
   }
 
   public searchApps = (callback: any): void => {
     this.searchItems(callback, searchTerms.app);
+  }
+
+  public searchMaps = (callback: any): void => {
+    this.searchItems(callback, searchTerms.map);
   }
 
   public searchMapLayers = (callback: any): void => {
@@ -80,6 +84,7 @@ export class AppManager {
       callback(allItems);
     });
   }
+
 
   private searchAllItems = async (term: string) => {
 

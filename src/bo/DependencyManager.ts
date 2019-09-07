@@ -15,13 +15,12 @@ export default class DependencyManager {
     this.arcgis = arcgis;
   }
 
-  // TODO: Remove static num and start
   public getItemDependencies = (callback: any, itemId: string) => {
-    this.searchAllItems(itemId, this.arcgis.itemDependencies).then(all => callback(all));
+    this.searchAllItems(itemId, this.arcgis.itemDependencies).then(all => { callback(all); console.log(all) });
   }
 
   public getItemDependenciesTo = (callback: any, itemId: string) => {
-    this.searchAllItems(itemId, this.arcgis.itemDependenciesTo).then(all => callback(all));
+    this.searchAllItems(itemId, this.arcgis.itemDependenciesTo).then(all => { callback(all); console.log(all) });
   }
 
   private searchAllItems = async (itemId: string, functionToCall: any) => {
@@ -54,6 +53,7 @@ export default class DependencyManager {
 
 
     let children = await this.searchAllItems(itemId, this.arcgis.itemDependencies);
+    // if (d.item) console.log(d.item.title, children);
     children.forEach(child => {
       if (child.error) {
         d.hasErrors = true;
@@ -65,6 +65,7 @@ export default class DependencyManager {
     });
 
     let parents = await this.searchAllItems(itemId, this.arcgis.itemDependenciesTo);
+    // if (d.item) console.log(d.item.title, parents);
     parents.forEach(parent => {
       if (parent.error) {
         d.hasErrors = true;

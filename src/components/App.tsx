@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row'
 import "./App.css"
 
 // FontAwesome icons
-import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faUser, faServer } from '@fortawesome/free-solid-svg-icons'
 
 // Custom components
 import NavBar from "./NavBar";
@@ -33,6 +33,11 @@ export default class App extends React.Component<IAppProps, IAppState> {
     super(props);
     this.state = { items: [], filteredItems: [], filterTerm: "", type: AppState.UNKNOWN };
     this.app = new AppManager();
+  }
+
+  private displayServer = (e: any) => {
+    console.log(e);
+    this.setState({ items: e, filteredItems: e, type: AppState.APP });
   }
 
   private displayApps = (e: any) => {
@@ -104,6 +109,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
             <nav className="col-md-2 d-none d-md-block bg-dark sidebar">
               <div className="sidebar-sticky">
+                <SearchLink icon={faServer} css="server" caption="Server" action={() => this.app.searchServer(this.displayServer)} />
                 <SearchLink icon={faTabletAlt} css="app" caption="Web Apps" action={() => this.app.searchApps(this.displayApps)} />
                 <SearchLink icon={faMap} css="map" caption="Web Maps" action={() => this.app.searchMaps(this.displayMaps)} />
                 <SearchLink icon={faLayerGroup} css="mapLayer" caption="Map Image Layer" action={() => this.app.searchMapLayers(this.displayMapImageLayers)} />

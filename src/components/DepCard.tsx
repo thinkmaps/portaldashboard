@@ -66,8 +66,8 @@ export default class DepCard extends React.Component<IDepCardProps, IDepCardStat
   public render() {
     return (
       <>
-        <div className="bbadgeC">
-          <Badge variant="secondary" className="bbadge" title={this.props.depenedency.parents.size + " parents / " + this.props.depenedency.children.size + " children"}>{this.props.depenedency.parents.size + "/" + this.props.depenedency.children.size}</Badge>
+        <div className="badgeContainerC">
+          <Badge variant="secondary" className="badgeContainer" title={this.props.depenedency.parents.size + " parents / " + this.props.depenedency.children.size + " children"}>{this.props.depenedency.parents.size + "/" + this.props.depenedency.children.size}</Badge>
           <div className={"bg-light hundred " + this.getBorderColor()}>
             <div className="h6 nw" title={this.props.depenedency.item!.title}>
               {this.getIcon()}

@@ -1,61 +1,46 @@
 import axios from "axios";
 import https from "https";
-
-export interface IPagedResponse {
-  total: number;
-  start: number;
-  num: number;
-  nextStart: number;
-}
-
-export interface IDependencyResponse {
-  total: number;
-  start: number;
-  num: number;
-  nextStart: number;
-  list: Array<any>;
-  error: IError | undefined;
-}
-
-export interface IError {
-  message: string;
-}
+import RestUrls from "./RestUrls";
+import { IError, IDependencyResponse } from "./RestInterfaces";
 
 export class ArcGis {
 
   private httpsAgent = new https.Agent({ rejectUnauthorized: false });
-  private url: string;
   private username: string;
   private password: string;
   private token: string | undefined = undefined;
-
-  // https://developers.arcgis.com/rest/users-groups-and-items/servers.htm
-  private serversUrl = (orgId: string) => `${this.url}/sharing/rest/portals/${orgId}/servers`;
-
-
-
-  //private selfUrl = () => `${this.url}/sharing/rest/portals/self`
-  private itemUrl = (id: string) => `${this.url}/sharing/rest/content/items/${id}`;
-  private itemDataUrl = (id: string) => `${this.url}/sharing/rest/content/items/${id}/data`;
-  private searchUrl = (start: number, num: number, q: string) => `${this.url}/sharing/rest/search?start=${start}&num=${num}&q=${q}`;
-  private usersUrl = (orgId: string, start: number, num: number) => `${this.url}/sharing/rest/portals/${orgId}/users?start=${start}&num=${num}`;
-  private itemDepUrl = (itemId: string, start: number, num: number) => `${this.url}/sharing/rest/content/items/${itemId}/dependencies?start=${start}&num=${num}`;
-  private itemDepToUrl = (itemId: string, start: number, num: number) => `${this.url}/sharing/rest/content/items/${itemId}/dependencies/listDependentsTo?start=${start}&num=${num}`;
-  private itemPortalUrl = (itemId: string) => `${this.url}/home/item.html?id=${itemId}`;
+  private urls: RestUrls;
 
   constructor(url: string, username: string, password: string) {
-    this.url = url;
     this.username = username;
     this.password = password;
+    this.urls = new RestUrls(url);
   }
 
+
+  // Servers
   public servers = async (orgId: string) => {
-    return await this.getWithTokenAsJson(this.serversUrl(orgId));
+    return await this.getWithTokenAsJson(this.urls.serversUrl(orgId));
   }
 
-  // #region Dependencies
+  // Search
+  public search = async (term: string, start: number, num: number) => {
+    return await this.getWithTokenAsJson(this.urls.searchUrl(start, num, term));
+  }
+
+  // Item
+  public getItem = async (id: string) => {
+    return await this.getWithTokenAsJson(this.urls.itemUrl(id));
+  }
+
+  // Users
+  public users = async (orgId: string, start: number, num: number) => {
+    return await this.getWithTokenAsJson(this.urls.usersUrl(orgId, start, num));
+  }
+
+  // Dependencies
   public itemDependencies = async (itemId: string, start: number, num: number): Promise<IDependencyResponse> => {
-    let response = await this.getWithTokenAsJson(this.itemDepUrl(itemId, start, num));
+    let response = await this.getWithTokenAsJson(this.urls.itemDepUrl(itemId, start, num));
     return this.getDependencyResponseFromJson(response);
   }
 
@@ -65,10 +50,10 @@ export class ArcGis {
     // does return empty lists :-(
 
     // 1. call JSON end point to get total, start, num, nextStart
-    let response = await this.getWithTokenAsJson(this.itemDepToUrl(itemId, start, num));
+    let response = await this.getWithTokenAsJson(this.urls.itemDepToUrl(itemId, start, num));
     if (!response.error) {
       // 2. call HTML endpoint to get the list
-      let html = await this.getWithTokenAsHtml(this.itemDepToUrl(itemId, start, num));
+      let html = await this.getWithTokenAsHtml(this.urls.itemDepToUrl(itemId, start, num));
       let list = JSON.parse(this.getListFromHtml(html));
       return this.getDependencyResponseFromJson(response, list);
     }
@@ -106,45 +91,32 @@ export class ArcGis {
 
 
 
-  public getItemPortalUrl = (itemId: string) => this.itemPortalUrl(itemId);
+  public getItemPortalUrl = (itemId: string) => this.urls.itemPortalUrl(itemId);
 
   public getItemDataUrl = async (itemId: string) => {
     let token = await this.getToken();
-    let url = this.addJsonParameter(this.itemDataUrl(itemId));
+    let url = this.addJsonParameter(this.urls.itemDataUrl(itemId));
     return this.addTokenParameter(url, token);
   }
 
 
-
-  public users = async (orgId: string, start: number, num: number) => {
-    return await this.getWithTokenAsJson(this.usersUrl(orgId, start, num));
-  }
-
-  public search = async (start: number, num: number, term: string) => {
-    return await this.getWithTokenAsJson(this.searchUrl(start, num, term));
-  }
-
-  public getItem = async (id: string) => {
-    return await this.getWithTokenAsJson(this.itemUrl(id));
-  }
-
   private getWithTokenAsJson = async (url: string) => {
 
     const token = await this.getToken()
-    url = await this.addJsonParameter(url)
-    url = await this.addTokenParameter(url, token)
+    url = this.addJsonParameter(url)
+    url = this.addTokenParameter(url, token)
     const result = await axios.get(url, { httpsAgent: this.httpsAgent })
-    return await result.data
+    return result.data
 
   }
 
   private getWithTokenAsHtml = async (url: string) => {
 
     const token = await this.getToken()
-    url = await this.addHTMLParameter(url)
-    url = await this.addTokenParameter(url, token)
+    url = this.addHTMLParameter(url)
+    url = this.addTokenParameter(url, token)
     const result = await axios.get(url, { httpsAgent: this.httpsAgent })
-    return await result.data
+    return result.data
   }
 
   private addJsonParameter = (url: string) => {
@@ -181,10 +153,7 @@ export class ArcGis {
     formData.append("expiration", "60");
     formData.append("f", "json");
 
-    const repsonse = await axios.post(
-      `${this.url}/sharing/rest/generateToken`,
-      formData
-    )
+    const repsonse = await axios.post(this.urls.generateTokenUrl(), formData)
     this.token = repsonse.data.token;
 
     // Renew token after 55 minutes

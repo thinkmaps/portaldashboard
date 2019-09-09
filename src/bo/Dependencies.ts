@@ -1,4 +1,4 @@
-import { Item } from "./ItemTypes";
+import { IItem, IDependency } from "./RestInterfaces";
 
 enum ArcGisDependencyTypes {
   "id" = "id",
@@ -6,15 +6,9 @@ enum ArcGisDependencyTypes {
   "serverId" = "serverId"
 }
 
-interface ArcGisDependency {
-  dependencyType: string;
-  id?: string;
-  url?: string;
-}
-
 export class Dependency {
   public id: string;
-  public item: Item | undefined;
+  public item: IItem | undefined;
   public parents: Set<string>;
   public children: Set<string>;
   public servers: Set<string>;
@@ -23,7 +17,7 @@ export class Dependency {
   public message: string;
 
 
-  constructor(id: string, item: Item | undefined) {
+  constructor(id: string, item: IItem | undefined) {
     this.id = id;
     this.item = item;
     this.parents = new Set();
@@ -34,7 +28,7 @@ export class Dependency {
     this.message = "";
   }
 
-  public addParents = (dep: Array<ArcGisDependency>) => {
+  public addParents = (dep: Array<IDependency>) => {
     dep.forEach(d => {
       if (d.dependencyType === ArcGisDependencyTypes.id) this.parents.add(d.id!);
       if (d.dependencyType === ArcGisDependencyTypes.url) this.urls.add(d.url!);
@@ -43,7 +37,7 @@ export class Dependency {
     });
   }
 
-  public addChildren = (dep: Array<ArcGisDependency>) => {
+  public addChildren = (dep: Array<IDependency>) => {
     dep.forEach(d => {
       if (d.dependencyType === ArcGisDependencyTypes.id) this.children.add(d.id!);
       if (d.dependencyType === ArcGisDependencyTypes.url) this.urls.add(d.url!);

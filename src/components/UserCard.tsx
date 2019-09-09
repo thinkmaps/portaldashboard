@@ -1,14 +1,12 @@
 import * as React from 'react';
 import Card from 'react-bootstrap/Card';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
 import { faUser, faUserClock, faUserTimes } from '@fortawesome/free-solid-svg-icons'
-
-import { User } from "../bo/ItemTypes";
+import { IUser } from "../bo/RestInterfaces";
 
 export interface IUserCardProps {
   key: string;
-  item: User;
+  item: IUser;
 }
 
 export default class UserCard extends React.Component<IUserCardProps> {
@@ -19,7 +17,7 @@ export default class UserCard extends React.Component<IUserCardProps> {
   private isOlderThan = (days: number) => {
     const danger = new Date();
     danger.setDate(danger.getDate() - days);
-    return this.props.item.lastLogin <= danger;
+    return new Date(parseInt(this.props.item.lastLogin)) <= danger;
   }
 
   private getBorderColor = () => {
@@ -57,17 +55,17 @@ export default class UserCard extends React.Component<IUserCardProps> {
       <Card className={"bg-light " + this.getBorderColor()}>
         <Card.Body>
           <Card.Title className={this.getColor()}>
-            <div className="h5 nw" title={this.props.item.fullname}>
-              {this.getIcon()}{this.props.item.fullname}
+            <div className="h5 nw" title={this.props.item.fullName}>
+              {this.getIcon()}{this.props.item.fullName}
             </div>
           </Card.Title>
           <Card.Text>
-            Username: {this.props.item.username}<br />
+            Username: {this.props.item.userName}<br />
             Email: {this.props.item.email}<br />
             Level: {this.props.item.level}<br />
           </Card.Text>
         </Card.Body>
-        <Card.Footer className={this.getColor() + " " + this.getBorderColor()}>Last Login: {this.props.item.lastLogin.toLocaleDateString()}</Card.Footer>
+        <Card.Footer className={this.getColor() + " " + this.getBorderColor()}>Last Login: {new Date(parseInt(this.props.item.lastLogin)).toLocaleDateString()}</Card.Footer>
       </Card >);
   }
 }

@@ -3,18 +3,15 @@ import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Dependencies from "./Dependencies";
-
-// FontAwesome icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faCodeBranch, faCode, faEye } from '@fortawesome/free-solid-svg-icons'
-
-import { Item } from "../bo/ItemTypes";
+import { IItem } from "../bo/RestInterfaces";
 import { Dependency } from '../bo/Dependencies';
 import { AppManager, AppState } from "../bo/AppManager";
 
 export interface ItemCardProps {
   key: string;
-  item: Item;
+  item: IItem;
   type: AppState;
 }
 
@@ -90,7 +87,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
             </Card.Title>
             <Card.Text>
               By: {this.props.item.owner}<br />
-              Created: {this.props.item.created.toLocaleDateString()}<br />
+              Created: {new Date(parseInt(this.props.item.created)).toLocaleDateString()}<br />
             </Card.Text>
           </Card.Body>
           <Card.Footer>

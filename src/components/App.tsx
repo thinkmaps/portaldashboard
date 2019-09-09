@@ -14,12 +14,12 @@ import Items from "./Items";
 
 // Business objects
 import { AppState, AppManager } from "../bo/AppManager";
-import { Item, User } from "../bo/ItemTypes";
+import { IItem, IUser, IServer } from "../bo/RestInterfaces";
 
 interface IAppProps { }
 interface IAppState {
-  items: Array<Item | User>;
-  filteredItems: Array<Item | User>;
+  items: Array<IItem | IUser | IServer>;
+  filteredItems: Array<IItem | IUser | IServer>;
   filterTerm: string;
   type: AppState;
 }
@@ -35,9 +35,8 @@ export default class App extends React.Component<IAppProps, IAppState> {
     this.app = new AppManager();
   }
 
-  private displayServer = (e: any) => {
-    console.log(e);
-    this.setState({ items: e, filteredItems: e, type: AppState.APP });
+  private displayServer = (servers: Array<IServer>) => {
+    this.setState({ items: servers, filteredItems: servers, type: AppState.SERVER });
   }
 
   private displayApps = (e: any) => {
@@ -70,16 +69,21 @@ export default class App extends React.Component<IAppProps, IAppState> {
     if (this.filterTerm.length === 0) this.setState({ filteredItems: this.state.items });
 
     let f = this.state.items.filter(item => {
-      if (item instanceof Item) {
-        return item.title.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1 || item.owner.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1
-      }
-      else if (item instanceof User) {
+
+      if (this.state.type === AppState.USER) {
+        item = item as IUser;
         return (
-          item.fullname.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1 ||
-          item.username.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1 ||
+          item.fullName.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1 ||
+          item.userName.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1 ||
           item.email.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1
         )
       }
+
+      if (this.state.type === AppState.APP || this.state.type === AppState.MAP || this.state.type === AppState.MAPIMAGELAYER || this.state.type === AppState.FEATAURELAYER) {
+        item = item as IItem;
+        return item.title.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1 || item.owner.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1
+      }
+
       return false;
     });
     this.setState({ filteredItems: f })
@@ -92,6 +96,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
   }
 
   private getColor = () => {
+    if (this.state.type === AppState.SERVER) return "server"
     if (this.state.type === AppState.APP) return "app"
     if (this.state.type === AppState.MAP) return "map"
     if (this.state.type === AppState.MAPIMAGELAYER) return "mapLayer"
@@ -109,12 +114,13 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
             <nav className="col-md-2 d-none d-md-block bg-dark sidebar">
               <div className="sidebar-sticky">
-                <SearchLink icon={faServer} css="server" caption="Server" action={() => this.app.searchServer(this.displayServer)} />
+
                 <SearchLink icon={faTabletAlt} css="app" caption="Web Apps" action={() => this.app.searchApps(this.displayApps)} />
                 <SearchLink icon={faMap} css="map" caption="Web Maps" action={() => this.app.searchMaps(this.displayMaps)} />
                 <SearchLink icon={faLayerGroup} css="mapLayer" caption="Map Image Layer" action={() => this.app.searchMapLayers(this.displayMapImageLayers)} />
                 <SearchLink icon={faDrawPolygon} css="featureLayer" caption="Feature Layers" action={() => this.app.searchFeatureLayers(this.displayFeatureLayers)} />
                 <SearchLink icon={faUser} css="user" caption="Users" action={() => this.app.searchUsers(this.displayUsers)} />
+                <SearchLink icon={faServer} css="server" caption="Server" action={() => this.app.servers(this.displayServer)} />
 
                 <div className="counterWrapper">
                   <div className={"counter " + this.getColor()}>Items total:</div>

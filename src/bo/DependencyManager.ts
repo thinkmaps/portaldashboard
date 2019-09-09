@@ -1,9 +1,6 @@
-import { ArcGis, IDependencyResponse } from "./ArcGis";
-import { Item } from "./ItemTypes";
-
+import { ArcGis } from "./ArcGis";
+import { IDependencyResponse } from "./RestInterfaces";
 import { Dependency } from "./Dependencies";
-
-
 
 export default class DependencyManager {
 
@@ -48,7 +45,7 @@ export default class DependencyManager {
     if (item.error) {
       d = new Dependency(itemId, undefined);
     } else {
-      d = new Dependency(itemId, new Item(item.id, item.type, item.title, item.owner, item.created));
+      d = new Dependency(itemId, item);
     }
 
 

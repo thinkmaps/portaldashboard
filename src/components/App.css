@@ -73,6 +73,10 @@
   border-radius: 0;
 }
 
+.navbar .btn {
+  margin-right: .5rem !important;
+}
+
 .form-control-dark {
   color: white;
   background-color: rgba(255, 255, 255, 0.1);
@@ -222,5 +226,10 @@ td .border-danger {
   padding: 0 !important;
   -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0) !important;
           box-shadow: 0 0 0 rgba(0, 0, 0, 0) !important;
+}
+
+.portal {
+  color: #e4902f !important;
+  font-size: 1.2rem;
 }
 /*# sourceMappingURL=App.css.map */

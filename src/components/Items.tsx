@@ -4,11 +4,12 @@ import ItemCard from "./ItemCard";
 import UserCard from "./UserCard";
 import { ServerCard } from "./ServerCard";
 import { IItem, IUser, IServer } from "../bo/RestInterfaces";
-import { AppState } from "../bo/AppManager";
+import { AppState, AppManager } from "../bo/AppManager";
 
 export interface IItemsProps {
   items: Array<IItem | IUser | IServer>;
   type: AppState;
+  app: AppManager;
 }
 
 export default class Items extends React.Component<IItemsProps> {
@@ -30,7 +31,7 @@ export default class Items extends React.Component<IItemsProps> {
         return <ServerCard item={item as IServer} key={index.toString()} />;
       }
       // // AppState is anything else: must be a ItemCard
-      return <ItemCard item={item as IItem} key={index.toString()} type={this.props.type} />;
+      return <ItemCard item={item as IItem} key={index.toString()} type={this.props.type} app={this.props.app} />;
     });
   }
 

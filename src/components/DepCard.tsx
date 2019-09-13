@@ -15,6 +15,7 @@ export interface IDepCardProps {
   key: string;
   depenedency: Dependency;
   type: AppState;
+  app: AppManager;
 }
 
 export interface IDepCardState {
@@ -24,11 +25,8 @@ export interface IDepCardState {
 
 export default class DepCard extends React.Component<IDepCardProps, IDepCardState> {
 
-  private app: AppManager;
-
   constructor(props: IDepCardProps) {
     super(props);
-    this.app = new AppManager();
     this.state = { show: false, dependencies: [] }
   }
 
@@ -45,7 +43,7 @@ export default class DepCard extends React.Component<IDepCardProps, IDepCardStat
   private handleClose = () => this.setState({ show: false });
   private handleShow = () => {
     this.setState({ dependencies: [] });
-    this.app.getAllDependencies(this.updateDependencies, this.props.depenedency.id);
+    this.props.app.getAllDependencies(this.updateDependencies, this.props.depenedency.id);
     this.setState({ show: true })
   };
 
@@ -82,7 +80,7 @@ export default class DepCard extends React.Component<IDepCardProps, IDepCardStat
             <Modal.Title>Dependencies:</Modal.Title>
           </Modal.Header>
           <Modal.Body className="ccenter">
-            <Dependencies dependencies={this.state.dependencies} itemId={this.props.depenedency.id} />
+            <Dependencies dependencies={this.state.dependencies} itemId={this.props.depenedency.id} app={this.props.app} />
           </Modal.Body>
 
         </Modal>

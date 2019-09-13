@@ -27,7 +27,7 @@ export interface IItem {
 
 // https://developers.arcgis.com/rest/users-groups-and-items/users.htm
 export interface IUser {
-  userName: string;
+  username: string;
   fullName: string;
   email: string;
   level: string;

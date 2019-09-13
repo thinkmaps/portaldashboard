@@ -1,6 +1,9 @@
+import axios from "axios";
+import crypto from "crypto";
 import { ArcGis } from "./ArcGis";
 import * as  searchTerms from "./searchTerms.json";
 import DependencyManager from "./DependencyManager";
+import { IPortal } from "../bo/Portals";
 
 export enum AppState {
   APP,
@@ -11,21 +14,18 @@ export enum AppState {
   SERVER,
   UNKNOWN
 }
+
 export class AppManager {
 
-  // TODO: Remove hard coded orgId.
   private orgId: string = "0123456789ABCDEF";
-  private arcgis: ArcGis;
-  private dependencyManager: DependencyManager;
-
+  private arcgis: ArcGis = new ArcGis("", "", "");
+  private portals: Array<IPortal> = [];
+  private dependencyManager: DependencyManager = new DependencyManager(this.arcgis);
 
   constructor() {
-    // TODO: Remove hard coded credentials.
-
-    // this.arcgis = new ArcGis("https://maps-q.kaufland.com/portal", "python_scriptuser", "X0MAhTHkzIC9BjMhJXPL");
-    this.arcgis = new ArcGis("https://vsdev1720.esri-de.com/portal", "portaladmin", "portaladmin1234");
-    // this.arcgis = new ArcGis("https://vsdev2426.esri-de.com/portal", "s.mendler", "Sonne1234");
-    this.dependencyManager = new DependencyManager(this.arcgis);
+    const x = this.encrypt("Hello World");
+    const y = this.decrypt(x);
+    console.log(x, y);
   }
 
   public servers = (callback: any): void => {
@@ -34,18 +34,25 @@ export class AppManager {
     );
   }
 
-  private handleResponse = (callback: any, response: any, key: string) => {
-    if (response.error) {
-      console.error(response.error);
-      callback(response.error);
-    } else {
-      if (response[key]) {
-        callback(response[key])
-      }
-    }
+  public getPortalsFromConfig = (callback: any) => {
+    axios.get("/config.json").then(portals => {
+      this.portals = portals.data.portals;
+      window.localStorage.clear();
+      // window.localStorage.setItem("PortalDashboard", JSON.stringify(this.portals));
+      callback(portals.data.portals)
+    });
   }
 
+  public setPortal = (portal: IPortal) => {
 
+    // Look p local storage for username and password
+    let username = window.localStorage.getItem(`${this.encrypt(portal.url)}a1`);
+    let password = window.localStorage.getItem(`${this.encrypt(portal.url)}b2`);
+
+
+    this.arcgis = new ArcGis(portal.url, portal.username!, portal.password!);
+    this.dependencyManager = new DependencyManager(this.arcgis);
+  }
 
   public getItemDataUrl = (itemId: string) => this.arcgis.getItemDataUrl(itemId);
   public getItemPortalUrl = (itemId: string) => this.arcgis.getItemPortalUrl(itemId);
@@ -65,7 +72,6 @@ export class AppManager {
   public getAllDependencies = async (callback: any, itemId: string) => {
     return this.dependencyManager.getAllDependencies(callback, itemId, true, true, true);
   }
-
 
   public searchApps = (callback: any): void => {
     this.searchItems(callback, searchTerms.app);
@@ -87,13 +93,13 @@ export class AppManager {
     this.searchAll(this.orgId, this.arcgis.users, 100).then((searchResults: any) => {
       let results = searchResults.map((searchResult: any) => searchResult.users).flat();
       callback(results);
-      // let allUsers = users
-      //   .map((item: any) => new User(item.username, item.fullName, item.email, item.level, item.lastLogin))
-      //   .filter((user: User) => user.email !== "support@esri.com")
-      //   .sort((u1: User, u2: User) => (u1.lastLogin > u2.lastLogin) ? -1 : ((u2.lastLogin > u1.lastLogin) ? 1 : 0));
-      // callback(allUsers);
     });
   }
+
+
+
+
+
 
   private searchItems = (callback: any, term: string) => {
     this.searchAll(term, this.arcgis.search, 100).then((searchResults: any) => {
@@ -102,11 +108,9 @@ export class AppManager {
     });
   }
 
-
   private searchAll = async (parameter: string, functionToCall: any, num: number) => {
 
     let allResults: Array<any> = []
-
     let first = await functionToCall(parameter, 1, num);
     allResults.push(first);
     if (first.nextStart < 0) return allResults;
@@ -119,6 +123,30 @@ export class AppManager {
     return allResults
   }
 
+  private handleResponse = (callback: any, response: any, key: string) => {
+    if (response.error) {
+      console.error(response.error);
+      callback(response.error);
+    } else {
+      if (response[key]) {
+        callback(response[key])
+      }
+    }
+  }
+
+  // https://www.thepolyglotdeveloper.com/2018/01/encrypt-decrypt-data-nodejs-crypto-library/
+  private encrypt = (data: string) => {
+    var cipher = crypto.createCipher('aes-256-cbc', "f80f86dd550dc1806c483dd52a0fe4b8");
+    var encrypted = Buffer.concat([cipher.update(new Buffer(JSON.stringify(data), "utf8")), cipher.final()]);
+    return encrypted.toString("hex");
+  }
+
+  private decrypt = (data: any) => {
+    data = Buffer.from(data, "hex");
+    var decipher = crypto.createDecipher("aes-256-cbc", "f80f86dd550dc1806c483dd52a0fe4b8");
+    var decrypted = Buffer.concat([decipher.update(data), decipher.final()]);
+    return JSON.parse(decrypted.toString());
+  }
 
   // private searchAllItems = async (term: string) => {
 

@@ -12,21 +12,19 @@ import { AppManager, AppState } from "../bo/AppManager";
 export interface ItemCardProps {
   key: string;
   item: IItem;
+  app: AppManager;
   type: AppState;
 }
 
-export interface IItemCardState {
+interface IItemCardState {
   show: boolean;
   dependencies: Array<Dependency>;
 }
 
 export default class ItemCard extends React.Component<ItemCardProps, IItemCardState> {
 
-  private app: AppManager;
-
   constructor(props: ItemCardProps) {
     super(props);
-    this.app = new AppManager();
     this.state = { show: false, dependencies: [] }
   }
 
@@ -44,7 +42,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
   private handleShow = () => {
     this.setState({ dependencies: [] });
 
-    this.app.getAllDependencies(this.updateDependencies, this.props.item.id);
+    this.props.app.getAllDependencies(this.updateDependencies, this.props.item.id);
 
 
     this.setState({ show: true })
@@ -65,13 +63,13 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
   }
 
   private openJsonUrl = () => {
-    this.app.getItemDataUrl(this.props.item.id).then(url =>
+    this.props.app.getItemDataUrl(this.props.item.id).then(url =>
       window.open(url, "_blank")
     )
   }
 
   private openPortalUrl = () => {
-    window.open(this.app.getItemPortalUrl(this.props.item.id), "_blank")
+    window.open(this.props.app.getItemPortalUrl(this.props.item.id), "_blank")
   }
 
   public render() {
@@ -103,7 +101,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
             <Modal.Title>Dependencies:</Modal.Title>
           </Modal.Header>
           <Modal.Body className="ccenter">
-            <Dependencies dependencies={this.state.dependencies} itemId={this.props.item.id} />
+            <Dependencies dependencies={this.state.dependencies} itemId={this.props.item.id} app={this.props.app} />
           </Modal.Body>
         </Modal>
 

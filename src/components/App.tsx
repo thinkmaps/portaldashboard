@@ -64,7 +64,6 @@ export default class App extends React.Component<IAppProps, IAppState> {
       this.setState({ items: [], filteredItems: [], state: state });
     }
 
-
     if (state === DashboardState.APP) {
       this.app.searchApps((apps: Array<IItem>) => {
         this.setState({ items: apps, filteredItems: apps, state: state });
@@ -152,7 +151,6 @@ export default class App extends React.Component<IAppProps, IAppState> {
         this.setAppState(DashboardState.UNKNOWN);
       }
       this.setAppState(this.state.state);
-
     } else {
       this.setAppState(DashboardState.NOTLOGGEDIN);
       this.app = new AppManager(new ArcGis("", "", ""));

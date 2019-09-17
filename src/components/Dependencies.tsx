@@ -99,7 +99,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
     let root = this.getDependencyFromDependencies(this.props.itemId);
     if (!root) return;
 
-    return (<table className="dialogTable">
+    return (<table>
       <tbody>
         <tr>
           <td className="sub" align="right">{this.renderDependElements(root.parents, this.getParents)}</td>

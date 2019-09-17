@@ -98,7 +98,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
 
         <Modal show={this.state.show} onHide={this.handleClose} dialogClassName="dialog">
           <Modal.Header closeButton className="bg-light">
-            <Modal.Title>Dependencies:</Modal.Title>
+            <Modal.Title>Relations between portal items:</Modal.Title>
           </Modal.Header>
           <Modal.Body className="ccenter">
             <Dependencies dependencies={this.state.dependencies} itemId={this.props.item.id} app={this.props.app} />

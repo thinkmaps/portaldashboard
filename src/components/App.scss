@@ -1,3 +1,11 @@
+$d0: rgb(228,144,47);
+$d1: rgb(188,51,95);
+$d2: rgb(212,82,61);
+$d3: rgb(122,42,152);
+$d4: rgb(99,166,238);
+$d5: rgb(114,173,92);
+$d6: rgb(156,194,92);
+
 $c0: rgb(253,239,191);
 $c1: rgb(243,229,171);
 $c2: rgb(202,215,174);
@@ -11,6 +19,7 @@ $darkGrey: rgb(65,65,65);
 $mediumGrey: rgb(80,80,80);
 $lightGrey: rgb(100,100,100);
 $veryLightGrey: rgb(200,200,200);
+
 
 .sidebar {
   position: fixed;
@@ -55,6 +64,10 @@ $veryLightGrey: rgb(200,200,200);
 
 [role="main"] {
   padding-top: 153px; /* Space for fixed navbar */
+  color: $mediumGrey;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
 }
 
 @media (min-width: 768px) {
@@ -79,6 +92,9 @@ $veryLightGrey: rgb(200,200,200);
   padding: .75rem 1rem;
   border-width: 0;
   border-radius: 0;
+}
+.navbar .btn{
+  margin-right: .5rem !important;
 }
 
 .form-control-dark {
@@ -167,6 +183,11 @@ td{
 .dialog{  
   width: 70%;
   max-width: none !important;
+  color: $mediumGrey;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+
 }
 
 .hundred{width: 250px;
@@ -219,3 +240,15 @@ td .border-danger{
   box-shadow: 0 0 0 rgba(0,0,0,0) !important;
 }
 
+.portal{
+  color: $d0 !important;
+  font-size: 1.2rem;
+}
+
+.strike {
+  text-decoration: line-through; 
+}
+
+.disabled{
+  color: $lightGrey;
+}

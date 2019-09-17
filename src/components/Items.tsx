@@ -4,11 +4,12 @@ import ItemCard from "./ItemCard";
 import UserCard from "./UserCard";
 import { ServerCard } from "./ServerCard";
 import { IItem, IUser, IServer } from "../bo/RestInterfaces";
-import { AppState } from "../bo/AppManager";
+import { DashboardState, AppManager } from "../bo/AppManager";
 
 export interface IItemsProps {
   items: Array<IItem | IUser | IServer>;
-  type: AppState;
+  dashboardState: DashboardState;
+  app: AppManager;
 }
 
 export default class Items extends React.Component<IItemsProps> {
@@ -18,19 +19,19 @@ export default class Items extends React.Component<IItemsProps> {
     return this.props.items.map((item: IItem | IUser | IServer, index) => {
 
       // AppState is unknown: return empty div
-      if (this.props.type === AppState.UNKNOWN) {
+      if (this.props.dashboardState === DashboardState.UNKNOWN) {
         return <div></div>;
       }
       // AppState is USER: return a UserCard
-      if (this.props.type === AppState.USER) {
+      if (this.props.dashboardState === DashboardState.USER) {
         return <UserCard item={item as IUser} key={index.toString()} />;
       }
       // AppState is SERVER: return a ServerCard
-      if (this.props.type === AppState.SERVER) {
+      if (this.props.dashboardState === DashboardState.SERVER) {
         return <ServerCard item={item as IServer} key={index.toString()} />;
       }
       // // AppState is anything else: must be a ItemCard
-      return <ItemCard item={item as IItem} key={index.toString()} type={this.props.type} />;
+      return <ItemCard item={item as IItem} key={index.toString()} type={this.props.dashboardState} app={this.props.app} />;
     });
   }
 

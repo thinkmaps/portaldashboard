@@ -22,7 +22,7 @@ export const ServerCard: React.FC<IServerCardProps> = (props: IServerCardProps) 
         Url: {props.item.url}<br />
         Is Hosted: {props.item.isHosted.toString()}<br />
         Server Type: {props.item.serverType}<br />
-        Server Function: {props.item.serverFunction}<br />
+        Server Role: {props.item.serverRole}<br />
       </Card.Text>
     </Card.Body>
   </Card>

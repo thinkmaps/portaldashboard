@@ -1,0 +1,16 @@
+{
+  "portals": [
+    {
+      "name": "Q-Umgebung",
+      "url": "https://vsdev1720.esri-de.com/portal"
+    },
+    {
+      "name": "P-Umgebung",
+      "url": "https://vsdev2426.esri-de.com/portal"
+    },
+    {
+      "name": "vsdev2502",
+      "url": "https://vsdev2502.esri-de.com/portal"
+    }
+  ]
+}

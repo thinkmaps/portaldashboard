@@ -2,15 +2,18 @@ import * as React from 'react';
 
 import ItemCard from "./ItemCard";
 import DepCard from "./DepCard";
+import { AppManager } from "../bo/AppManager";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSkullCrossbones } from '@fortawesome/free-solid-svg-icons'
 
 import { Dependency } from '../bo/Dependencies';
-import { AppState } from "../bo/AppManager";
+import { DashboardState } from "../bo/AppManager";
 
 export interface IDependenciesProps {
   itemId: string;
   dependencies: Array<Dependency>;
+  app: AppManager;
 }
 
 interface ITable {
@@ -23,11 +26,11 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
   private counter = 0;
 
   private getAppState = (key: string) => {
-    if (key === "Web Map") return AppState.MAP;
-    if (key === "Web Mapping Application") return AppState.APP;
-    if (key === "Map Service") return AppState.MAPIMAGELAYER;
-    if (key === "Feature Service") return AppState.FEATAURELAYER;
-    return AppState.UNKNOWN;
+    if (key === "Web Map") return DashboardState.MAP;
+    if (key === "Web Mapping Application") return DashboardState.APP;
+    if (key === "Map Service") return DashboardState.MAPIMAGELAYER;
+    if (key === "Feature Service") return DashboardState.FEATAURELAYER;
+    return DashboardState.UNKNOWN;
   }
 
   private getKey = () => {
@@ -83,7 +86,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
     if (dependency.item) {
       return (
         <>
-          <DepCard depenedency={dependency} key={dependency.id} type={this.getAppState(dependency.item.type)}></DepCard>
+          <DepCard depenedency={dependency} key={dependency.id} type={this.getAppState(dependency.item.type)} app={this.props.app}></DepCard>
         </>
       )
     }
@@ -100,7 +103,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
       <tbody>
         <tr>
           <td className="sub" align="right">{this.renderDependElements(root.parents, this.getParents)}</td>
-          <td className="main"><ItemCard item={root.item!} key={"dependencies" + this.counter} type={this.getAppState(root.item!.type)} /></td>
+          <td className="main"><ItemCard item={root.item!} key={"dependencies" + this.counter} type={this.getAppState(root.item!.type)} app={this.props.app} /></td>
           <td className="sub">{this.renderDependElements(root.children, this.getChildren)}</td>
         </tr>
       </tbody>

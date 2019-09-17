@@ -9,12 +9,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faCodeBranch } from '@fortawesome/free-solid-svg-icons'
 
 import { Dependency } from '../bo/Dependencies';
-import { AppManager, AppState } from "../bo/AppManager";
+import { AppManager, DashboardState } from "../bo/AppManager";
 
 export interface IDepCardProps {
   key: string;
   depenedency: Dependency;
-  type: AppState;
+  type: DashboardState;
+  app: AppManager;
 }
 
 export interface IDepCardState {
@@ -24,11 +25,8 @@ export interface IDepCardState {
 
 export default class DepCard extends React.Component<IDepCardProps, IDepCardState> {
 
-  private app: AppManager;
-
   constructor(props: IDepCardProps) {
     super(props);
-    this.app = new AppManager();
     this.state = { show: false, dependencies: [] }
   }
 
@@ -45,22 +43,22 @@ export default class DepCard extends React.Component<IDepCardProps, IDepCardStat
   private handleClose = () => this.setState({ show: false });
   private handleShow = () => {
     this.setState({ dependencies: [] });
-    this.app.getAllDependencies(this.updateDependencies, this.props.depenedency.id);
+    this.props.app.getAllDependencies(this.updateDependencies, this.props.depenedency.id);
     this.setState({ show: true })
   };
 
   private getIcon = () => {
-    if (this.props.type === AppState.APP) return <FontAwesomeIcon icon={faTabletAlt} className="app" />
-    if (this.props.type === AppState.MAP) return <FontAwesomeIcon icon={faMap} className="map" />
-    if (this.props.type === AppState.MAPIMAGELAYER) return <FontAwesomeIcon icon={faLayerGroup} className="mapLayer" />
-    if (this.props.type === AppState.FEATAURELAYER) return <FontAwesomeIcon icon={faDrawPolygon} className="featureLayer" />
+    if (this.props.type === DashboardState.APP) return <FontAwesomeIcon icon={faTabletAlt} className="app" />
+    if (this.props.type === DashboardState.MAP) return <FontAwesomeIcon icon={faMap} className="map" />
+    if (this.props.type === DashboardState.MAPIMAGELAYER) return <FontAwesomeIcon icon={faLayerGroup} className="mapLayer" />
+    if (this.props.type === DashboardState.FEATAURELAYER) return <FontAwesomeIcon icon={faDrawPolygon} className="featureLayer" />
   }
 
   private getBorderColor = () => {
-    if (this.props.type === AppState.APP) return "border-app";
-    if (this.props.type === AppState.MAP) return "border-map";
-    if (this.props.type === AppState.MAPIMAGELAYER) return "border-mapLayer";
-    if (this.props.type === AppState.FEATAURELAYER) return "border-featureLayer";
+    if (this.props.type === DashboardState.APP) return "border-app";
+    if (this.props.type === DashboardState.MAP) return "border-map";
+    if (this.props.type === DashboardState.MAPIMAGELAYER) return "border-mapLayer";
+    if (this.props.type === DashboardState.FEATAURELAYER) return "border-featureLayer";
   }
 
   public render() {
@@ -82,7 +80,7 @@ export default class DepCard extends React.Component<IDepCardProps, IDepCardStat
             <Modal.Title>Dependencies:</Modal.Title>
           </Modal.Header>
           <Modal.Body className="ccenter">
-            <Dependencies dependencies={this.state.dependencies} itemId={this.props.depenedency.id} />
+            <Dependencies dependencies={this.state.dependencies} itemId={this.props.depenedency.id} app={this.props.app} />
           </Modal.Body>
 
         </Modal>

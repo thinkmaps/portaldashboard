@@ -60,7 +60,7 @@ export default class UserCard extends React.Component<IUserCardProps> {
             </div>
           </Card.Title>
           <Card.Text>
-            Username: {this.props.item.userName}<br />
+            Username: {this.props.item.username}<br />
             Email: {this.props.item.email}<br />
             Level: {this.props.item.level}<br />
           </Card.Text>

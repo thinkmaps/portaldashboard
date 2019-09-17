@@ -7,7 +7,7 @@ import LoginManager from "../bo/LoginManager";
 
 interface ILoginDialogProps {
   portal: IPortal | undefined; // the portal to log in
-  onClose: any; // function to call, when the dialog is closed by hitting the close button ot the "x".
+  onClose: any; // function to call, when the dialog is closed
 }
 
 interface ILoginDialogState {
@@ -17,10 +17,9 @@ interface ILoginDialogState {
 
 export default class LoginDialog extends React.Component<ILoginDialogProps, ILoginDialogState> {
 
-  // the references to the HTMLInputElements for username and password.
   private usernameInput: React.RefObject<any>;
   private passwordInput: React.RefObject<any>;
-  private loginManager: LoginManager;
+  // private loginManager: LoginManager;
   private portal: IPortal | undefined;
   private message: string = "Please type in your credentials.";
   private errorMessage: string = "Invalid credentials. Unable to log in.";
@@ -30,13 +29,13 @@ export default class LoginDialog extends React.Component<ILoginDialogProps, ILog
     this.state = { show: true, message: this.message };
     this.usernameInput = React.createRef();
     this.passwordInput = React.createRef();
-    this.loginManager = new LoginManager();
+    //this.loginManager = new LoginManager();
     this.portal = undefined;
   }
 
   private onLoad = () => {
     if (this.props.portal) {
-      this.loginManager.loginToPortal(this.props.portal.url, (arcgis: any) => {
+      LoginManager.loginToPortal(this.props.portal.url, (arcgis: any) => {
         if (arcgis === undefined) {
           this.setState({ message: this.errorMessage })
         }
@@ -58,7 +57,7 @@ export default class LoginDialog extends React.Component<ILoginDialogProps, ILog
       // Read values form the textboxes and call the function defined by the app.
       let usernameInput = this.usernameInput.current as HTMLInputElement;
       let passwordInput = this.passwordInput.current as HTMLInputElement;
-      this.loginManager.setCredentials(this.props.portal.url, usernameInput.value, passwordInput.value);
+      LoginManager.setCredentials(this.props.portal.url, usernameInput.value, passwordInput.value);
       this.onLoad();
     }
   }

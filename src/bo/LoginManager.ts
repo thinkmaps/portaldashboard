@@ -3,52 +3,60 @@ import { ArcGis } from "./ArcGis";
 
 export default class LoginManager {
 
-  public loginToPortal = (url: string, callback: any): ArcGis | undefined => {
+  public static loginToPortal = (url: string, callback: any): void => {
 
-    let username = this.getUsername(url);
-    let password = this.getPassword(url);
+    // Get username and password from local storage
+    let username = LoginManager.getUsername(url);
+    let password = LoginManager.getPassword(url);
 
+    /// If there are username and password
     if (username && password && username.length > 0 && password.length > 0) {
-      username = this.decrypt(username);
-      password = this.decrypt(password);
 
+      // decrypt username and password
+      username = LoginManager.decrypt(username);
+      password = LoginManager.decrypt(password);
+
+      // create instance of ArcGis
       let arcgis = new ArcGis(url, username!, password!);
+
+      // check the credentials
       arcgis.hasValidCredentials().then(hasValidCredentials => {
         if (hasValidCredentials) {
           callback(arcgis);
-        } else { callback(undefined) }
-      })
-    } else {
-      return callback(undefined);
+        }
+      });
     }
+    // if there are no username and password or the credentials are invalid
+    callback(undefined);
   }
 
-  public setCredentials = (url: string, username: string, password: string) => {
-    this.setUsername(url, username);
-    this.setPassword(url, password);
+  public static setCredentials = (url: string, username: string, password: string): void => {
+    // store username and password in the local storage
+    LoginManager.setUsername(url, username);
+    LoginManager.setPassword(url, password);
   }
 
-  private getUsername = (url: string) =>
-    window.localStorage.getItem(`${this.encrypt(url)}un`);
-  private getPassword = (url: string) =>
-    window.localStorage.getItem(`${this.encrypt(url)}pw`);
-  private setUsername = (url: string, username: string) =>
-    window.localStorage.setItem(`${this.encrypt(url)}un`, this.encrypt(username));
-  private setPassword = (url: string, password: string) =>
-    window.localStorage.setItem(`${this.encrypt(url)}pw`, this.encrypt(password));
+  private static getUsername = (url: string) =>
+    window.localStorage.getItem(`${LoginManager.encrypt(url)}un`);
+  private static getPassword = (url: string) =>
+    window.localStorage.getItem(`${LoginManager.encrypt(url)}pw`);
+  private static setUsername = (url: string, username: string) =>
+    window.localStorage.setItem(`${LoginManager.encrypt(url)}un`, LoginManager.encrypt(username));
+  private static setPassword = (url: string, password: string) =>
+    window.localStorage.setItem(`${LoginManager.encrypt(url)}pw`, LoginManager.encrypt(password));
 
   // https://www.thepolyglotdeveloper.com/2018/01/encrypt-decrypt-data-nodejs-crypto-library/
-  private encrypt = (data: string) => {
+  private static encrypt = (data: string) => {
     var cipher = crypto.createCipher('aes-256-cbc', "f80f86dd550dc1806c483dd52a0fe4b8");
     var encrypted = Buffer.concat([cipher.update(new Buffer(JSON.stringify(data), "utf8")), cipher.final()]);
     return encrypted.toString("hex");
   }
 
-  private decrypt = (data: any) => {
+  // https://www.thepolyglotdeveloper.com/2018/01/encrypt-decrypt-data-nodejs-crypto-library/
+  private static decrypt = (data: any) => {
     data = Buffer.from(data, "hex");
     var decipher = crypto.createDecipher("aes-256-cbc", "f80f86dd550dc1806c483dd52a0fe4b8");
     var decrypted = Buffer.concat([decipher.update(data), decipher.final()]);
     return JSON.parse(decrypted.toString());
   }
-
 }

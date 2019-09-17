@@ -79,6 +79,7 @@ export class AppManager {
       let results = searchResults
         .map((searchResult: any) => searchResult.users)
         .flat()
+        .filter((u: IUser) => u.email !== "support@esri.com" && u.email !== "system_publisher@change.me")
         .sort((u1: IUser, u2: IUser) => (u1.lastLogin > u2.lastLogin) ? -1 : (u1.lastLogin < u2.lastLogin) ? 1 : 0)
       callback(results);
     });

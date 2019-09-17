@@ -17,7 +17,7 @@ export default class UserCard extends React.Component<IUserCardProps> {
   private isOlderThan = (days: number) => {
     const danger = new Date();
     danger.setDate(danger.getDate() - days);
-    return new Date(parseInt(this.props.item.lastLogin)) <= danger;
+    return new Date(this.props.item.lastLogin) <= danger;
   }
 
   private getBorderColor = () => {
@@ -65,7 +65,7 @@ export default class UserCard extends React.Component<IUserCardProps> {
             Level: {this.props.item.level}<br />
           </Card.Text>
         </Card.Body>
-        <Card.Footer className={this.getColor() + " " + this.getBorderColor()}>Last Login: {new Date(parseInt(this.props.item.lastLogin)).toLocaleDateString()}</Card.Footer>
+        <Card.Footer className={this.getColor() + " " + this.getBorderColor()}>Last Login: {new Date(this.props.item.lastLogin).toLocaleDateString()}</Card.Footer>
       </Card >);
   }
 }

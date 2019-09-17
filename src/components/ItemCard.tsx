@@ -85,7 +85,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
             </Card.Title>
             <Card.Text>
               By: {this.props.item.owner}<br />
-              Created: {new Date(parseInt(this.props.item.created)).toLocaleDateString()}<br />
+              Created: {new Date(this.props.item.created).toLocaleDateString()}<br />
             </Card.Text>
           </Card.Body>
           <Card.Footer>

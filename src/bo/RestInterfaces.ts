@@ -22,7 +22,7 @@ export interface IItem {
   type: string;
   title: string;
   owner: string;
-  created: string;
+  created: number;
 }
 
 // https://developers.arcgis.com/rest/users-groups-and-items/users.htm
@@ -31,7 +31,7 @@ export interface IUser {
   fullName: string;
   email: string;
   level: string;
-  lastLogin: string;
+  lastLogin: number;
 }
 
 // https://support.esri.com/en/technical-article/000021183

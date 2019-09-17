@@ -3,7 +3,7 @@ import crypto from "crypto";
 import { ArcGis } from "./ArcGis";
 import * as  searchTerms from "./searchTerms.json";
 import DependencyManager from "./DependencyManager";
-import { IPortal } from "../bo/Portals";
+import {IUser} from "./RestInterfaces";
 
 export enum DashboardState {
   UNKNOWN,
@@ -78,7 +78,10 @@ export class AppManager {
 
   public searchUsers = (callback: any): void => {
     this.searchAll(this.orgId, this.arcgis.users, 100).then((searchResults: any) => {
-      let results = searchResults.map((searchResult: any) => searchResult.users).flat();
+      let results = searchResults
+      .map((searchResult: any) => searchResult.users)
+      .flat()
+      .sort((u1: IUser, u2: IUser) => (u1.lastLogin > u2.lastLogin) ? -1 : (u1.lastLogin < u2.lastLogin) ? 1 : 0)
       callback(results);
     });
   }

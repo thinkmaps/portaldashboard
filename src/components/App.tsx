@@ -10,6 +10,7 @@ import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faUser, faServer } fro
 // Custom components
 import NavBar from "./NavBar";
 import SearchLink from "./SearchLink";
+import Counter from "./Counter";
 import Items from "./Items";
 import LoginDialog from "./LoginDialog";
 
@@ -66,40 +67,39 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
     if (state === DashboardState.APP) {
       this.app.searchApps((apps: Array<IItem>) => {
-        this.setState({ items: apps, filteredItems: apps, state: DashboardState.APP });
+        this.setState({ items: apps, filteredItems: apps, state: state });
         this.filter();
       });
     }
     if (state === DashboardState.MAP) {
       this.app.searchMaps((maps: Array<IItem>) => {
-        this.setState({ items: maps, filteredItems: maps, state: DashboardState.MAP });
+        this.setState({ items: maps, filteredItems: maps, state: state });
         this.filter();
       });
     }
     if (state === DashboardState.MAPIMAGELAYER) {
       this.app.searchMapLayers((mapLayers: Array<IItem>) => {
-        this.setState({ items: mapLayers, filteredItems: mapLayers, state: DashboardState.MAPIMAGELAYER });
+        this.setState({ items: mapLayers, filteredItems: mapLayers, state: state });
         this.filter();
       });
     }
     if (state === DashboardState.FEATAURELAYER) {
       this.app.searchMapLayers((featureLayers: Array<IItem>) => {
-        this.setState({ items: featureLayers, filteredItems: featureLayers, state: DashboardState.FEATAURELAYER });
+        this.setState({ items: featureLayers, filteredItems: featureLayers, state: state });
         this.filter();
       });
     }
     if (state === DashboardState.USER) {
       this.app.searchUsers((users: Array<IUser>) => {
-        this.setState({ items: users, filteredItems: users, state: DashboardState.USER });
+        this.setState({ items: users, filteredItems: users, state: state });
         this.filter();
       });
     }
     if (state === DashboardState.SERVER) {
       this.app.servers((server: Array<IServer>) => {
-        this.setState({ items: server, filteredItems: server, state: DashboardState.SERVER });
+        this.setState({ items: server, filteredItems: server, state: state });
       });
     }
-
   }
 
   private filter = () => {
@@ -133,7 +133,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
     this.filter();
   }
 
-  private getColor = () => {
+  private getColor = (): string => {
     if (this.state.state === DashboardState.SERVER) return "server"
     if (this.state.state === DashboardState.APP) return "app"
     if (this.state.state === DashboardState.MAP) return "map"
@@ -141,6 +141,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
     if (this.state.state === DashboardState.FEATAURELAYER) return "featureLayer"
     if (this.state.state === DashboardState.USER) return "user"
     if (this.state.state === DashboardState.UNKNOWN) return "transparent"
+    return "";
   }
 
   private closeLoginDialog = (arcgis: any) => {
@@ -163,7 +164,12 @@ export default class App extends React.Component<IAppProps, IAppState> {
   public render() {
     return (
       <>
-        <NavBar setFilter={this.setFilter} portals={this.state.portals} setPortal={this.changePortal} activePortal={this.state.activePortal} dashboardState={this.state.state} />
+        <NavBar setFilter={this.setFilter}
+          portals={this.state.portals}
+          setPortal={this.changePortal}
+          activePortal={this.state.activePortal}
+          dashboardState={this.state.state} />
+
         <Container fluid={true} >
           <Row>
 
@@ -177,13 +183,8 @@ export default class App extends React.Component<IAppProps, IAppState> {
                 <SearchLink disabled={this.disabled()} icon={faUser} css="user" caption="Users" action={() => this.setAppState(DashboardState.USER)} />
                 <SearchLink disabled={this.disabled()} icon={faServer} css="server" caption="Server" action={() => this.setAppState(DashboardState.SERVER)} />
 
-                <div className="counterWrapper">
-                  <div className={"counter " + this.getColor()}>Items total:</div>
-                  <div className={"counter large " + this.getColor()}>{this.state.items.length}</div>
-                </div>
-                <div className="counterWrapper"></div>
-                <div className={"counter " + this.getColor()}>Items filtered:</div>
-                <div className={"counter large " + this.getColor()}>{this.state.filteredItems.length}</div>
+                <Counter cssClass={this.getColor()} itemCount={this.state.items.length} filteredItemCount={this.state.filteredItems.length} />
+
               </div>
 
             </nav>

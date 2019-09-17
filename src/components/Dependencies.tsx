@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSkullCrossbones } from '@fortawesome/free-solid-svg-icons'
 
 import { Dependency } from '../bo/Dependencies';
-import { AppState } from "../bo/AppManager";
+import { DashboardState } from "../bo/AppManager";
 
 export interface IDependenciesProps {
   itemId: string;
@@ -26,11 +26,11 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
   private counter = 0;
 
   private getAppState = (key: string) => {
-    if (key === "Web Map") return AppState.MAP;
-    if (key === "Web Mapping Application") return AppState.APP;
-    if (key === "Map Service") return AppState.MAPIMAGELAYER;
-    if (key === "Feature Service") return AppState.FEATAURELAYER;
-    return AppState.UNKNOWN;
+    if (key === "Web Map") return DashboardState.MAP;
+    if (key === "Web Mapping Application") return DashboardState.APP;
+    if (key === "Map Service") return DashboardState.MAPIMAGELAYER;
+    if (key === "Feature Service") return DashboardState.FEATAURELAYER;
+    return DashboardState.UNKNOWN;
   }
 
   private getKey = () => {

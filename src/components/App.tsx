@@ -14,19 +14,19 @@ import Items from "./Items";
 import LoginDialog from "./LoginDialog";
 
 // Business objects
-import { AppState, AppManager } from "../bo/AppManager";
+import { DashboardState, AppManager } from "../bo/AppManager";
 import { IItem, IUser, IServer } from "../bo/RestInterfaces";
 import { IPortal } from "../bo/Portals";
+import { ArcGis } from '../bo/ArcGis';
 
 interface IAppProps { }
 interface IAppState {
   portals: Array<IPortal>;
-  activePortal: string;
+  activePortal: IPortal | undefined;
   items: Array<IItem | IUser | IServer>;
   filteredItems: Array<IItem | IUser | IServer>;
   filterTerm: string;
-  state: AppState;
-  loginOpen: boolean;
+  state: DashboardState;
 }
 
 export default class App extends React.Component<IAppProps, IAppState> {
@@ -36,8 +36,8 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
   constructor(props: IAppProps) {
     super(props);
-    this.state = { items: [], filteredItems: [], filterTerm: "", state: AppState.UNKNOWN, portals: [], activePortal: "", loginOpen: true };
-    this.app = new AppManager();
+    this.state = { items: [], filteredItems: [], filterTerm: "", state: DashboardState.NOTLOGGEDIN, portals: [], activePortal: undefined };
+    this.app = new AppManager(new ArcGis("", "", ""));
   }
 
   public componentDidMount = () => {
@@ -45,51 +45,58 @@ export default class App extends React.Component<IAppProps, IAppState> {
   }
 
   private updatePortals = (portals: Array<IPortal>) => {
-    this.app.setPortal(portals[0]);
-    this.setState({ portals: portals, activePortal: portals[0].name });
+    this.setState({ portals: portals });
+    this.setState({ portals: portals, activePortal: portals[0] });
   }
 
-  public setPortal = (portal: IPortal) => {
-    this.app.setPortal(portal);
-    this.setState({ activePortal: portal.name });
-    this.setAppState(this.state.state);
+  public changePortal = (portal: IPortal) => {
+    this.setState({ activePortal: portal });
   }
 
-  private setAppState = (state: AppState) => {
+  private setAppState = (state: DashboardState) => {
 
-    if (state === AppState.APP) {
+    if (state === DashboardState.NOTLOGGEDIN) {
+      this.setState({ items: [], filteredItems: [], state: state });
+    }
+
+    if (state === DashboardState.UNKNOWN) {
+      this.setState({ items: [], filteredItems: [], state: state });
+    }
+
+
+    if (state === DashboardState.APP) {
       this.app.searchApps((apps: Array<IItem>) => {
-        this.setState({ items: apps, filteredItems: apps, state: AppState.APP });
+        this.setState({ items: apps, filteredItems: apps, state: DashboardState.APP });
         this.filter();
       });
     }
-    if (state === AppState.MAP) {
+    if (state === DashboardState.MAP) {
       this.app.searchMaps((maps: Array<IItem>) => {
-        this.setState({ items: maps, filteredItems: maps, state: AppState.MAP });
+        this.setState({ items: maps, filteredItems: maps, state: DashboardState.MAP });
         this.filter();
       });
     }
-    if (state === AppState.MAPIMAGELAYER) {
+    if (state === DashboardState.MAPIMAGELAYER) {
       this.app.searchMapLayers((mapLayers: Array<IItem>) => {
-        this.setState({ items: mapLayers, filteredItems: mapLayers, state: AppState.MAPIMAGELAYER });
+        this.setState({ items: mapLayers, filteredItems: mapLayers, state: DashboardState.MAPIMAGELAYER });
         this.filter();
       });
     }
-    if (state === AppState.FEATAURELAYER) {
+    if (state === DashboardState.FEATAURELAYER) {
       this.app.searchMapLayers((featureLayers: Array<IItem>) => {
-        this.setState({ items: featureLayers, filteredItems: featureLayers, state: AppState.FEATAURELAYER });
+        this.setState({ items: featureLayers, filteredItems: featureLayers, state: DashboardState.FEATAURELAYER });
         this.filter();
       });
     }
-    if (state === AppState.USER) {
+    if (state === DashboardState.USER) {
       this.app.searchUsers((users: Array<IUser>) => {
-        this.setState({ items: users, filteredItems: users, state: AppState.USER });
+        this.setState({ items: users, filteredItems: users, state: DashboardState.USER });
         this.filter();
       });
     }
-    if (state === AppState.SERVER) {
+    if (state === DashboardState.SERVER) {
       this.app.servers((server: Array<IServer>) => {
-        this.setState({ items: server, filteredItems: server, state: AppState.SERVER });
+        this.setState({ items: server, filteredItems: server, state: DashboardState.SERVER });
       });
     }
 
@@ -101,7 +108,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
     let f = this.state.items.filter(item => {
 
-      if (this.state.state === AppState.USER) {
+      if (this.state.state === DashboardState.USER) {
         item = item as IUser;
         return (
           item.fullName.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1 ||
@@ -110,7 +117,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
         )
       }
 
-      if (this.state.state === AppState.APP || this.state.state === AppState.MAP || this.state.state === AppState.MAPIMAGELAYER || this.state.state === AppState.FEATAURELAYER) {
+      if (this.state.state === DashboardState.APP || this.state.state === DashboardState.MAP || this.state.state === DashboardState.MAPIMAGELAYER || this.state.state === DashboardState.FEATAURELAYER) {
         item = item as IItem;
         return item.title.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1 || item.owner.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1
       }
@@ -127,35 +134,48 @@ export default class App extends React.Component<IAppProps, IAppState> {
   }
 
   private getColor = () => {
-    if (this.state.state === AppState.SERVER) return "server"
-    if (this.state.state === AppState.APP) return "app"
-    if (this.state.state === AppState.MAP) return "map"
-    if (this.state.state === AppState.MAPIMAGELAYER) return "mapLayer"
-    if (this.state.state === AppState.FEATAURELAYER) return "featureLayer"
-    if (this.state.state === AppState.USER) return "user"
-    if (this.state.state === AppState.UNKNOWN) return "transparent"
+    if (this.state.state === DashboardState.SERVER) return "server"
+    if (this.state.state === DashboardState.APP) return "app"
+    if (this.state.state === DashboardState.MAP) return "map"
+    if (this.state.state === DashboardState.MAPIMAGELAYER) return "mapLayer"
+    if (this.state.state === DashboardState.FEATAURELAYER) return "featureLayer"
+    if (this.state.state === DashboardState.USER) return "user"
+    if (this.state.state === DashboardState.UNKNOWN) return "transparent"
   }
 
-  private closeLoginDialog = () => {
-    this.setState({ loginOpen: false });
+  private closeLoginDialog = (arcgis: any) => {
+
+    if (arcgis) {
+      this.app = new AppManager(arcgis);
+      if (this.state.state === DashboardState.NOTLOGGEDIN) {
+        this.setAppState(DashboardState.UNKNOWN);
+      }
+      this.setAppState(this.state.state);
+
+    } else {
+      this.setAppState(DashboardState.NOTLOGGEDIN);
+      this.app = new AppManager(new ArcGis("", "", ""));
+    }
   }
+
+  private disabled = () => this.state.state === DashboardState.NOTLOGGEDIN;
 
   public render() {
     return (
       <>
-        <NavBar setFilter={this.setFilter} portals={this.state.portals} setPortal={this.setPortal} activePortal={this.state.activePortal} />
+        <NavBar setFilter={this.setFilter} portals={this.state.portals} setPortal={this.changePortal} activePortal={this.state.activePortal} dashboardState={this.state.state} />
         <Container fluid={true} >
           <Row>
 
             <nav className="col-md-2 d-none d-md-block bg-dark sidebar">
               <div className="sidebar-sticky">
 
-                <SearchLink icon={faTabletAlt} css="app" caption="Web Apps" action={() => this.setAppState(AppState.APP)} />
-                <SearchLink icon={faMap} css="map" caption="Web Maps" action={() => this.setAppState(AppState.MAP)} />
-                <SearchLink icon={faLayerGroup} css="mapLayer" caption="Map Image Layer" action={() => this.setAppState(AppState.MAPIMAGELAYER)} />
-                <SearchLink icon={faDrawPolygon} css="featureLayer" caption="Feature Layers" action={() => this.setAppState(AppState.FEATAURELAYER)} />
-                <SearchLink icon={faUser} css="user" caption="Users" action={() => this.setAppState(AppState.USER)} />
-                <SearchLink icon={faServer} css="server" caption="Server" action={() => this.setAppState(AppState.SERVER)} />
+                <SearchLink disabled={this.disabled()} icon={faTabletAlt} css="app" caption="Web Apps" action={() => this.setAppState(DashboardState.APP)} />
+                <SearchLink disabled={this.disabled()} icon={faMap} css="map" caption="Web Maps" action={() => this.setAppState(DashboardState.MAP)} />
+                <SearchLink disabled={this.disabled()} icon={faLayerGroup} css="mapLayer" caption="Map Image Layer" action={() => this.setAppState(DashboardState.MAPIMAGELAYER)} />
+                <SearchLink disabled={this.disabled()} icon={faDrawPolygon} css="featureLayer" caption="Feature Layers" action={() => this.setAppState(DashboardState.FEATAURELAYER)} />
+                <SearchLink disabled={this.disabled()} icon={faUser} css="user" caption="Users" action={() => this.setAppState(DashboardState.USER)} />
+                <SearchLink disabled={this.disabled()} icon={faServer} css="server" caption="Server" action={() => this.setAppState(DashboardState.SERVER)} />
 
                 <div className="counterWrapper">
                   <div className={"counter " + this.getColor()}>Items total:</div>
@@ -169,13 +189,13 @@ export default class App extends React.Component<IAppProps, IAppState> {
             </nav>
 
             <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
-              <Items items={this.state.filteredItems} type={this.state.state} app={this.app} />
+              <Items items={this.state.filteredItems} dashboardState={this.state.state} app={this.app} />
             </main>
 
           </Row>
         </ Container>
 
-        <LoginDialog show={this.state.loginOpen} portalName={this.state.activePortal} close={this.closeLoginDialog} />
+        <LoginDialog portal={this.state.activePortal!} onClose={this.closeLoginDialog} />
 
       </>);
   }

@@ -7,13 +7,18 @@ import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { IPortal } from "../bo/Portals";
+import { DashboardState } from "../bo/AppManager";
 
 export interface INavBarProps {
   setFilter: any;
   portals: Array<IPortal>;
-  activePortal: string;
+  dashboardState: DashboardState;
+  activePortal: IPortal | undefined;
   setPortal: any;
 }
+
+// TODOs:
+// - strikethrough the portal name, if credentials are invalid
 
 export default class NavBar extends React.Component<INavBarProps> {
 
@@ -53,13 +58,16 @@ export default class NavBar extends React.Component<INavBarProps> {
     }
   }
 
+  private getBrandStyle = () => this.props.dashboardState === DashboardState.NOTLOGGEDIN ? "portal strike" : "portal";
+
+
   public render() {
 
     return (
       <Navbar className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-        <Navbar.Brand className="navbar-brand col-sm-3 col-md-2 mr-0 portal">
+        <Navbar.Brand className={"navbar-brand col-sm-3 col-md-2 mr-0 " + this.getBrandStyle()}>
           <FontAwesomeIcon icon={faHome} className="portal" />
-          {this.props.activePortal}
+          {this.props.activePortal ? this.props.activePortal.name : ""}
         </Navbar.Brand>
         <Nav className="mr-auto">
           <NavDropdown title="Change Portal" id="basic-nav-dropdown">

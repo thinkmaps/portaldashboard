@@ -7,13 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faCodeBranch, faCode, faEye } from '@fortawesome/free-solid-svg-icons'
 import { IItem } from "../bo/RestInterfaces";
 import { Dependency } from '../bo/Dependencies';
-import { AppManager, AppState } from "../bo/AppManager";
+import { AppManager, DashboardState } from "../bo/AppManager";
 
 export interface ItemCardProps {
   key: string;
   item: IItem;
   app: AppManager;
-  type: AppState;
+  type: DashboardState;
 }
 
 interface IItemCardState {
@@ -49,17 +49,17 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
   };
 
   private getIcon = () => {
-    if (this.props.type === AppState.APP) return <FontAwesomeIcon icon={faTabletAlt} className="app" />
-    if (this.props.type === AppState.MAP) return <FontAwesomeIcon icon={faMap} className="map" />
-    if (this.props.type === AppState.MAPIMAGELAYER) return <FontAwesomeIcon icon={faLayerGroup} className="mapLayer" />
-    if (this.props.type === AppState.FEATAURELAYER) return <FontAwesomeIcon icon={faDrawPolygon} className="featureLayer" />
+    if (this.props.type === DashboardState.APP) return <FontAwesomeIcon icon={faTabletAlt} className="app" />
+    if (this.props.type === DashboardState.MAP) return <FontAwesomeIcon icon={faMap} className="map" />
+    if (this.props.type === DashboardState.MAPIMAGELAYER) return <FontAwesomeIcon icon={faLayerGroup} className="mapLayer" />
+    if (this.props.type === DashboardState.FEATAURELAYER) return <FontAwesomeIcon icon={faDrawPolygon} className="featureLayer" />
   }
 
   private getBorderColor = () => {
-    if (this.props.type === AppState.APP) return "border-app"
-    if (this.props.type === AppState.MAP) return "border-map"
-    if (this.props.type === AppState.MAPIMAGELAYER) return "border-mapLayer"
-    if (this.props.type === AppState.FEATAURELAYER) return "border-featureLayer"
+    if (this.props.type === DashboardState.APP) return "border-app"
+    if (this.props.type === DashboardState.MAP) return "border-map"
+    if (this.props.type === DashboardState.MAPIMAGELAYER) return "border-mapLayer"
+    if (this.props.type === DashboardState.FEATAURELAYER) return "border-featureLayer"
   }
 
   private openJsonUrl = () => {

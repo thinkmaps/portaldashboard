@@ -46,6 +46,10 @@
 [role="main"] {
   padding-top: 153px;
   /* Space for fixed navbar */
+  color: #505050;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
 }
 
 @media (min-width: 768px) {
@@ -174,6 +178,10 @@ td {
 .dialog {
   width: 70%;
   max-width: none !important;
+  color: #505050;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
 }
 
 .hundred {
@@ -231,5 +239,13 @@ td .border-danger {
 .portal {
   color: #e4902f !important;
   font-size: 1.2rem;
+}
+
+.strike {
+  text-decoration: line-through;
+}
+
+.disabled {
+  color: #646464;
 }
 /*# sourceMappingURL=App.css.map */

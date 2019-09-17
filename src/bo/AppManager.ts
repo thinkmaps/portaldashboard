@@ -5,53 +5,40 @@ import * as  searchTerms from "./searchTerms.json";
 import DependencyManager from "./DependencyManager";
 import { IPortal } from "../bo/Portals";
 
-export enum AppState {
+export enum DashboardState {
+  UNKNOWN,
   APP,
   MAP,
   MAPIMAGELAYER,
   FEATAURELAYER,
   USER,
   SERVER,
-  UNKNOWN
+  NOTLOGGEDIN
 }
 
 export class AppManager {
 
   private orgId: string = "0123456789ABCDEF";
-  private arcgis: ArcGis = new ArcGis("", "", "");
-  private portals: Array<IPortal> = [];
-  private dependencyManager: DependencyManager = new DependencyManager(this.arcgis);
+  private arcgis: ArcGis;
+  private dependencyManager: DependencyManager;
+  public state: DashboardState = DashboardState.UNKNOWN;
 
-  constructor() {
-    const x = this.encrypt("Hello World");
-    const y = this.decrypt(x);
-    console.log(x, y);
+  constructor(arcgis: ArcGis) {
+    this.arcgis = arcgis;
+    this.dependencyManager = new DependencyManager(this.arcgis);
   }
+
+  public getPortalsFromConfig = (callback: any) => {
+    axios.get("./config.json").then(portals => {
+      callback(portals.data.portals)
+    });
+  }
+
 
   public servers = (callback: any): void => {
     this.arcgis.servers(this.orgId).then(serversResponse =>
       this.handleResponse(callback, serversResponse, "servers")
     );
-  }
-
-  public getPortalsFromConfig = (callback: any) => {
-    axios.get("/config.json").then(portals => {
-      this.portals = portals.data.portals;
-      window.localStorage.clear();
-      // window.localStorage.setItem("PortalDashboard", JSON.stringify(this.portals));
-      callback(portals.data.portals)
-    });
-  }
-
-  public setPortal = (portal: IPortal) => {
-
-    // Look p local storage for username and password
-    let username = window.localStorage.getItem(`${this.encrypt(portal.url)}a1`);
-    let password = window.localStorage.getItem(`${this.encrypt(portal.url)}b2`);
-
-
-    this.arcgis = new ArcGis(portal.url, portal.username!, portal.password!);
-    this.dependencyManager = new DependencyManager(this.arcgis);
   }
 
   public getItemDataUrl = (itemId: string) => this.arcgis.getItemDataUrl(itemId);

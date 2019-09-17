@@ -17,6 +17,10 @@ export class ArcGis {
     this.urls = new RestUrls(url);
   }
 
+  public hasValidCredentials = async () => {
+    let token = await this.getToken();
+    return (token !== undefined)
+  }
 
   // Servers
   public servers = async (orgId: string) => {
@@ -153,12 +157,14 @@ export class ArcGis {
     formData.append("expiration", "60");
     formData.append("f", "json");
 
-    const repsonse = await axios.post(this.urls.generateTokenUrl(), formData)
-    this.token = repsonse.data.token;
+    const response = await axios.post(this.urls.generateTokenUrl(), formData);
 
-    // Renew token after 55 minutes
-    window.setInterval(() => { this.token = undefined; console.log("Token reset.") }, 55 * 60 * 60 * 1000);
+    if (response.data.token) {
+      this.token = response.data.token;
+      return response.data.token
+    }
 
-    return await repsonse.data.token
+    return undefined;
+
   }
 }

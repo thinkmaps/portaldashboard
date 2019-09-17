@@ -20,6 +20,7 @@ $mediumGrey: rgb(80,80,80);
 $lightGrey: rgb(100,100,100);
 $veryLightGrey: rgb(200,200,200);
 
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -63,6 +64,10 @@ $veryLightGrey: rgb(200,200,200);
 
 [role="main"] {
   padding-top: 153px; /* Space for fixed navbar */
+  color: $mediumGrey;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
 }
 
 @media (min-width: 768px) {
@@ -178,6 +183,11 @@ td{
 .dialog{  
   width: 70%;
   max-width: none !important;
+  color: $mediumGrey;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+
 }
 
 .hundred{width: 250px;
@@ -233,4 +243,12 @@ td .border-danger{
 .portal{
   color: $d0 !important;
   font-size: 1.2rem;
+}
+
+.strike {
+  text-decoration: line-through; 
+}
+
+.disabled{
+  color: $lightGrey;
 }

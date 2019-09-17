@@ -1,22 +1,16 @@
 {
   "portals": [
     {
-      "name": "vsdev1720",
-      "url": "https://vsdev1720.esri-de.com/portal",
-      "username": "portaladmin",
-      "password": "portaladmin1234"
+      "name": "Q-Umgebung",
+      "url": "https://vsdev1720.esri-de.com/portal"
     },
     {
-      "name": "vsdev2426",
-      "url": "https://vsdev2426.esri-de.com/portal",
-      "username": "s.mendler",
-      "password": "Sonne1234"
+      "name": "P-Umgebung",
+      "url": "https://vsdev2426.esri-de.com/portal"
     },
     {
       "name": "vsdev2502",
-      "url": "https://vsdev2502.esri-de.com/portal",
-      "username": "portaladmin",
-      "password": "portaladmin1234"
+      "url": "https://vsdev2502.esri-de.com/portal"
     }
   ]
 }

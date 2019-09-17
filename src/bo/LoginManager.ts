@@ -23,11 +23,15 @@ export default class LoginManager {
       arcgis.hasValidCredentials().then(hasValidCredentials => {
         if (hasValidCredentials) {
           callback(arcgis);
+        } else {
+          callback(undefined)
         }
       });
+    } else {
+      // if there are no username and password or the credentials are invalid
+      callback(undefined);
+
     }
-    // if there are no username and password or the credentials are invalid
-    callback(undefined);
   }
 
   public static setCredentials = (url: string, username: string, password: string): void => {

@@ -85,9 +85,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
   private getDepCard = (dependency: Dependency) => {
     if (dependency.item) {
       return (
-        <>
-          <DepCard depenedency={dependency} key={dependency.id} type={this.getAppState(dependency.item.type)} app={this.props.app}></DepCard>
-        </>
+        <DepCard depenedency={dependency} key={dependency.id} type={this.getAppState(dependency.item.type)} app={this.props.app}></DepCard>
       )
     }
     return <div className="border-danger"><FontAwesomeIcon icon={faSkullCrossbones} className="text-danger" />Error: missing item!</div>

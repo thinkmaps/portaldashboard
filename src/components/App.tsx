@@ -83,7 +83,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
       });
     }
     if (state === DashboardState.FEATAURELAYER) {
-      this.app.searchMapLayers((featureLayers: Array<IItem>) => {
+      this.app.searchFeatureLayers((featureLayers: Array<IItem>) => {
         this.setState({ items: featureLayers, filteredItems: featureLayers, state: state });
         this.filter();
       });

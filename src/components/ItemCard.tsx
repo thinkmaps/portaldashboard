@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Dependencies from "./Dependencies";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faCodeBranch, faCode, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faCodeBranch, faCode, faEye, faTools } from '@fortawesome/free-solid-svg-icons'
 import { IItem } from "../bo/RestInterfaces";
 import { Dependency } from '../bo/Dependencies';
 import { AppManager, DashboardState } from "../bo/AppManager";
@@ -53,6 +53,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
     if (this.props.type === DashboardState.MAP) return <FontAwesomeIcon icon={faMap} className="map" />
     if (this.props.type === DashboardState.MAPIMAGELAYER) return <FontAwesomeIcon icon={faLayerGroup} className="mapLayer" />
     if (this.props.type === DashboardState.FEATAURELAYER) return <FontAwesomeIcon icon={faDrawPolygon} className="featureLayer" />
+    if (this.props.type === DashboardState.TOOL) return <FontAwesomeIcon icon={faTools} className="tool" />
   }
 
   private getBorderColor = () => {
@@ -60,6 +61,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
     if (this.props.type === DashboardState.MAP) return "border-map"
     if (this.props.type === DashboardState.MAPIMAGELAYER) return "border-mapLayer"
     if (this.props.type === DashboardState.FEATAURELAYER) return "border-featureLayer"
+    if (this.props.type === DashboardState.TOOL) return "border-tool"
   }
 
   private openJsonUrl = () => {

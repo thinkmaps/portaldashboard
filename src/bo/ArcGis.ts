@@ -94,7 +94,7 @@ export class ArcGis {
   // #endregion
 
 
-
+  public getUserContentUrl = (user: string) => this.urls.userContentUrl(user);
   public getItemPortalUrl = (itemId: string) => this.urls.itemPortalUrl(itemId);
 
   public getItemDataUrl = async (itemId: string) => {

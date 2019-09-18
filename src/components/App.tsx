@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row'
 import "./App.css"
 
 // FontAwesome icons
-import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faUser, faServer } from '@fortawesome/free-solid-svg-icons'
+import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faTools, faUser, faServer } from '@fortawesome/free-solid-svg-icons'
 
 // Custom components
 import NavBar from "./NavBar";
@@ -17,17 +17,18 @@ import LoginDialog from "./LoginDialog";
 // Business objects
 import { DashboardState, AppManager } from "../bo/AppManager";
 import { IItem, IUser, IServer } from "../bo/RestInterfaces";
-import { IPortal } from "../bo/Portals";
+import { IPortal, IDashboardConfig } from "../bo/DashboardConfig";
 import { ArcGis } from '../bo/ArcGis';
 
 interface IAppProps { }
 interface IAppState {
-  portals: Array<IPortal>;
+  // portals: Array<IPortal>;
   activePortal: IPortal | undefined;
   items: Array<IItem | IUser | IServer>;
   filteredItems: Array<IItem | IUser | IServer>;
   filterTerm: string;
   state: DashboardState;
+  config: IDashboardConfig | undefined;
 }
 
 export default class App extends React.Component<IAppProps, IAppState> {
@@ -37,17 +38,19 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
   constructor(props: IAppProps) {
     super(props);
-    this.state = { items: [], filteredItems: [], filterTerm: "", state: DashboardState.NOTLOGGEDIN, portals: [], activePortal: undefined };
+    this.state = { items: [], filteredItems: [], filterTerm: "", state: DashboardState.NOTLOGGEDIN, activePortal: undefined, config: undefined };
     this.app = new AppManager(new ArcGis("", "", ""));
   }
 
   public componentDidMount = () => {
-    this.app.getPortalsFromConfig(this.updatePortals);
+    this.app.getConfig(this.updatePortals);
   }
 
-  private updatePortals = (portals: Array<IPortal>) => {
-    this.setState({ portals: portals });
-    this.setState({ portals: portals, activePortal: portals[0] });
+  private updatePortals = (config: IDashboardConfig) => {
+    this.setState({ config: config });
+    if (config) {
+      this.setState({ activePortal: config.portals[0] });
+    }
   }
 
   public changePortal = (portal: IPortal) => {
@@ -88,6 +91,12 @@ export default class App extends React.Component<IAppProps, IAppState> {
         this.filter();
       });
     }
+    if (state === DashboardState.TOOL) {
+      this.app.searchTools((tools: Array<IItem>) => {
+        this.setState({ items: tools, filteredItems: tools, state: state });
+        this.filter();
+      });
+    }
     if (state === DashboardState.USER) {
       this.app.searchUsers((users: Array<IUser>) => {
         this.setState({ items: users, filteredItems: users, state: state });
@@ -116,7 +125,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
         )
       }
 
-      if (this.state.state === DashboardState.APP || this.state.state === DashboardState.MAP || this.state.state === DashboardState.MAPIMAGELAYER || this.state.state === DashboardState.FEATAURELAYER) {
+      if (this.state.state === DashboardState.APP || this.state.state === DashboardState.MAP || this.state.state === DashboardState.MAPIMAGELAYER || this.state.state === DashboardState.FEATAURELAYER || this.state.state === DashboardState.TOOL) {
         item = item as IItem;
         return item.title.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1 || item.owner.toLowerCase().indexOf(this.filterTerm.toLocaleLowerCase()) !== -1
       }
@@ -138,6 +147,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
     if (this.state.state === DashboardState.MAP) return "map"
     if (this.state.state === DashboardState.MAPIMAGELAYER) return "mapLayer"
     if (this.state.state === DashboardState.FEATAURELAYER) return "featureLayer"
+    if (this.state.state === DashboardState.TOOL) return "tool"
     if (this.state.state === DashboardState.USER) return "user"
     if (this.state.state === DashboardState.UNKNOWN) return "transparent"
     return "";
@@ -159,11 +169,40 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
   private disabled = () => this.state.state === DashboardState.NOTLOGGEDIN;
 
+  private getSearchLinks = () => {
+
+    let searchLinks = [];
+    if (this.state.config) {
+      if (this.state.config.showApps) {
+        searchLinks.push(<SearchLink key="s1" disabled={this.disabled()} icon={faTabletAlt} css="app" caption="Web Apps" action={() => this.setAppState(DashboardState.APP)} />)
+      }
+      if (this.state.config.showMaps) {
+        searchLinks.push(<SearchLink key="s2" disabled={this.disabled()} icon={faMap} css="map" caption="Web Maps" action={() => this.setAppState(DashboardState.MAP)} />)
+      }
+      if (this.state.config.showMapayers) {
+        searchLinks.push(<SearchLink key="s3" disabled={this.disabled()} icon={faLayerGroup} css="mapLayer" caption="Map Image Layer" action={() => this.setAppState(DashboardState.MAPIMAGELAYER)} />)
+      }
+      if (this.state.config.showFeaturelayer) {
+        searchLinks.push(<SearchLink key="s4" disabled={this.disabled()} icon={faDrawPolygon} css="featureLayer" caption="Feature Layers" action={() => this.setAppState(DashboardState.FEATAURELAYER)} />)
+      }
+      if (this.state.config.showTools) {
+        searchLinks.push(<SearchLink key="s5" disabled={this.disabled()} icon={faTools} css="tool" caption="Tools" action={() => this.setAppState(DashboardState.TOOL)} />)
+      }
+      if (this.state.config.showUsers) {
+        searchLinks.push(<SearchLink key="s6" disabled={this.disabled()} icon={faUser} css="user" caption="Users" action={() => this.setAppState(DashboardState.USER)} />)
+      }
+      if (this.state.config.showServer) {
+        searchLinks.push(<SearchLink key="s7" disabled={this.disabled()} icon={faServer} css="server" caption="Server" action={() => this.setAppState(DashboardState.SERVER)} />)
+      }
+    }
+    return searchLinks;
+  }
+
   public render() {
     return (
       <>
         <NavBar setFilter={this.setFilter}
-          portals={this.state.portals}
+          portals={this.state.config ? this.state.config.portals : undefined}
           setPortal={this.changePortal}
           activePortal={this.state.activePortal}
           dashboardState={this.state.state} />
@@ -174,12 +213,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
             <nav className="col-md-2 d-none d-md-block bg-dark sidebar">
               <div className="sidebar-sticky">
 
-                <SearchLink disabled={this.disabled()} icon={faTabletAlt} css="app" caption="Web Apps" action={() => this.setAppState(DashboardState.APP)} />
-                <SearchLink disabled={this.disabled()} icon={faMap} css="map" caption="Web Maps" action={() => this.setAppState(DashboardState.MAP)} />
-                <SearchLink disabled={this.disabled()} icon={faLayerGroup} css="mapLayer" caption="Map Image Layer" action={() => this.setAppState(DashboardState.MAPIMAGELAYER)} />
-                <SearchLink disabled={this.disabled()} icon={faDrawPolygon} css="featureLayer" caption="Feature Layers" action={() => this.setAppState(DashboardState.FEATAURELAYER)} />
-                <SearchLink disabled={this.disabled()} icon={faUser} css="user" caption="Users" action={() => this.setAppState(DashboardState.USER)} />
-                <SearchLink disabled={this.disabled()} icon={faServer} css="server" caption="Server" action={() => this.setAppState(DashboardState.SERVER)} />
+                {this.getSearchLinks()}
 
                 <Counter cssClass={this.getColor()} itemCount={this.state.items.length} filteredItemCount={this.state.filteredItems.length} />
 

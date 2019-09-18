@@ -24,7 +24,7 @@ export default class Items extends React.Component<IItemsProps> {
       }
       // AppState is USER: return a UserCard
       if (this.props.dashboardState === DashboardState.USER) {
-        return <UserCard item={item as IUser} key={index.toString()} />;
+        return <UserCard item={item as IUser} key={index.toString()} app={this.props.app} />;
       }
       // AppState is SERVER: return a ServerCard
       if (this.props.dashboardState === DashboardState.SERVER) {

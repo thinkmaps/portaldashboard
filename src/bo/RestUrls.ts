@@ -29,6 +29,8 @@ export default class RestUrls {
   // https://developers.arcgis.com/rest/users-groups-and-items/users.htm
   public usersUrl = (orgId: string, start: number, num: number) =>
     `${this.url}/sharing/rest/portals/${orgId}/users?start=${start}&num=${num}`;
+  public userContentUrl = (user: string) =>
+    `${this.url}/home/content.html?user=${user}`;
 
   // Dependencies
   // https://support.esri.com/en/technical-article/000021183

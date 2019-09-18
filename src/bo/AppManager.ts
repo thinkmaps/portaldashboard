@@ -10,6 +10,7 @@ export enum DashboardState {
   MAP,
   MAPIMAGELAYER,
   FEATAURELAYER,
+  TOOL,
   USER,
   SERVER,
   NOTLOGGEDIN
@@ -20,16 +21,21 @@ export class AppManager {
   private orgId: string = "0123456789ABCDEF";
   private arcgis: ArcGis;
   private dependencyManager: DependencyManager;
+  //public config: IDashboardConfig | undefined;
   public state: DashboardState = DashboardState.UNKNOWN;
+
 
   constructor(arcgis: ArcGis) {
     this.arcgis = arcgis;
     this.dependencyManager = new DependencyManager(this.arcgis);
   }
 
-  public getPortalsFromConfig = (callback: any) => {
-    axios.get("./config.json").then(portals => {
-      callback(portals.data.portals)
+  public getConfig = (callback: any) => {
+    axios.get("./config.json").then(configResponse => {
+      if (configResponse && configResponse.data) {
+        //this.config = configResponse.data;
+        callback(configResponse.data)
+      }
     });
   }
 
@@ -41,6 +47,8 @@ export class AppManager {
 
   public getItemDataUrl = (itemId: string) => this.arcgis.getItemDataUrl(itemId);
   public getItemPortalUrl = (itemId: string) => this.arcgis.getItemPortalUrl(itemId);
+  public getUserContentUrl = (user: string) => this.arcgis.getUserContentUrl(user);
+
 
   public getItem = (callback: any, itemId: string) => {
     this.arcgis.getItem(itemId).then(item => callback(item))
@@ -72,6 +80,10 @@ export class AppManager {
 
   public searchFeatureLayers = (callback: any): void => {
     this.searchItems(callback, searchTerms.featureLayer);
+  }
+
+  public searchTools = (callback: any): void => {
+    this.searchItems(callback, searchTerms.tool);
   }
 
   public searchUsers = (callback: any): void => {

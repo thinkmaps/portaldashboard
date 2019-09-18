@@ -1,10 +1,12 @@
 import * as React from 'react';
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faUserClock, faUserTimes } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faUserClock, faUserTimes, faUserCog } from '@fortawesome/free-solid-svg-icons'
 import { IUser } from "../bo/RestInterfaces";
-
+import { AppManager } from "../bo/AppManager";
 export interface IUserCardProps {
+  app: AppManager;
   key: string;
   item: IUser;
 }
@@ -50,6 +52,10 @@ export default class UserCard extends React.Component<IUserCardProps> {
     }
   }
 
+  private nothing = () => {
+    window.open(this.props.app.getUserContentUrl(this.props.item.username), "_blank")
+  }
+
   public render() {
     return (
       <Card className={"bg-light " + this.getBorderColor()}>
@@ -63,9 +69,12 @@ export default class UserCard extends React.Component<IUserCardProps> {
             Username: {this.props.item.username}<br />
             Email: {this.props.item.email}<br />
             Level: {this.props.item.level}<br />
+            <span className={this.getColor()}>Last Login: {new Date(this.props.item.lastLogin).toLocaleDateString()}</span>
           </Card.Text>
         </Card.Body>
-        <Card.Footer className={this.getColor() + " " + this.getBorderColor()}>Last Login: {new Date(this.props.item.lastLogin).toLocaleDateString()}</Card.Footer>
+        <Card.Footer className={this.getColor() + " " + this.getBorderColor()}>
+          <Button onClick={this.nothing} className="linkButton"><FontAwesomeIcon icon={faUserCog} className="codeBranch" title="Manage user items." /></Button>
+        </Card.Footer>
       </Card >);
   }
 }

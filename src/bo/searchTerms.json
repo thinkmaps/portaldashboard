@@ -2,5 +2,6 @@
   "app": "orgid:0123456789ABCDEF (type:(\"Web Mapping Application\") -owner:esri_apps -owner:esri_livingatlas)",
   "map": "orgid:0123456789ABCDEF (type:(\"Web Map\") -type:\"Web Mapping Application\" -owner:esri_livingatlas)",
   "mapImageLayer": "orgid:0123456789ABCDEF (type:(\"Map Service\") -typekeywords:(\"Tiled\" OR \"Hosted\") -type:(\"Web Map\" OR \"Web Mapping Application\" OR \"Shapefile\") -owner:esri_livingatlas)",
-  "featureLayer": "orgid:0123456789ABCDEF (type:(\"Feature Collection\" OR \"Feature Service\") -owner:esri_livingatlas)"
+  "featureLayer": "orgid:0123456789ABCDEF (type:(\"Feature Collection\" OR \"Feature Service\") -owner:esri_livingatlas)",
+  "tool": "orgid:0123456789ABCDEF ((typekeywords:\"tool\" OR type:\"Raster function template\" OR type:\"Geodata Service\" OR type:\"Workflow Manager Package\" OR type:\"Rule Package\" OR type:\"Operations Dashboard Add In\" OR type:\"Workflow Manager Service\" OR type:\"ArcGIS Pro Configuration\") -type:\"KML\")"
 }

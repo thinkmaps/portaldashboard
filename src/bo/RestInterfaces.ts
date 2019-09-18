@@ -43,6 +43,7 @@ export interface IDependencyResponse {
   list: Array<any>;
   error: IError | undefined;
 }
+
 export interface IDependency {
   dependencyType: string;
   id?: string;

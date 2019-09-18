@@ -2,7 +2,7 @@ import * as React from 'react';
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { IPortal } from '../bo/Portals';
+import { IPortal } from '../bo/DashboardConfig';
 import LoginManager from "../bo/LoginManager";
 
 interface ILoginDialogProps {

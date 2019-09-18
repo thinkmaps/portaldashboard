@@ -130,31 +130,39 @@ svg{margin-right: 5px;}
 }
 
 .app{
-  color: darken($c1, 10%);
+  color: darken($c0, 10%);
 }
 .border-app{
   border: solid 1px;
-  border-color: $c1;
+  border-color: $c0;
 }
 .map{
-  color:darken($c2, 10%);
+  color:darken($c1, 10%);
 }
 .border-map{
   border: solid 1px;
-  border-color:$c2;
+  border-color:$c1;
 }
 .mapLayer{
-  color:darken($c3, 10%);
+  color:darken($c2, 10%);
 }
 .border-mapLayer{
   border: solid 1px;
-  border-color:$c3;
+  border-color:$c2;
 }
 
 .featureLayer{
-  color:darken($c4, 10%);
+  color:darken($c3, 10%);
 }
 .border-featureLayer{
+  border: solid 1px;
+  border-color: $c3;
+}
+
+.tool{
+  color:darken($c4, 10%);
+}
+.border-tool{
   border: solid 1px;
   border-color: $c4;
 }

@@ -6,12 +6,12 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome } from '@fortawesome/free-solid-svg-icons'
-import { IPortal } from "../bo/Portals";
+import { IPortal } from "../bo/DashboardConfig";
 import { DashboardState } from "../bo/AppManager";
 
 export interface INavBarProps {
   setFilter: any;
-  portals: Array<IPortal>;
+  portals: Array<IPortal> | undefined;
   dashboardState: DashboardState;
   activePortal: IPortal | undefined;
   setPortal: any;

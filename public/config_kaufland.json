@@ -12,5 +12,12 @@
       "name": "P-Umgebung",
       "url": "https://maps.kaufland.com/portal"
     }
-  ]
+  ],
+  "showApps": true,
+  "showMaps": true,
+  "showMapayers": true,
+  "showFeaturelayer": true,
+  "showTools": true,
+  "showUsers": true,
+  "showServer": true
 }

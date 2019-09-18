@@ -116,37 +116,46 @@ svg {
 }
 
 .app {
-  color: #edd77e;
+  color: #fbe38e;
 }
 
 .border-app {
   border: solid 1px;
-  border-color: #f3e5ab;
+  border-color: #fdefbf;
 }
 
 .map {
-  color: #b4c68c;
+  color: #edd77e;
 }
 
 .border-map {
   border: solid 1px;
-  border-color: #cad7ae;
+  border-color: #f3e5ab;
 }
 
 .mapLayer {
-  color: #82b797;
+  color: #b4c68c;
 }
 
 .border-mapLayer {
   border: solid 1px;
-  border-color: #a2cab2;
+  border-color: #cad7ae;
 }
 
 .featureLayer {
-  color: #58aba2;
+  color: #82b797;
 }
 
 .border-featureLayer {
+  border: solid 1px;
+  border-color: #a2cab2;
+}
+
+.tool {
+  color: #58aba2;
+}
+
+.border-tool {
   border: solid 1px;
   border-color: #7abcb5;
 }

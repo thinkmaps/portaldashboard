@@ -96,6 +96,10 @@ export class ArcGis {
 
   public getUserContentUrl = (user: string) => this.urls.userContentUrl(user);
   public getItemPortalUrl = (itemId: string) => this.urls.itemPortalUrl(itemId);
+  public getWebmapViewerUrl = (itemId: string) => this.urls.webmapViewerUrl(itemId);
+  public getServerManagerUrl = (serverUrl: string) => this.urls.serverManagerUrl(serverUrl);
+  public getServerAdminUrl = (serverUrl: string) => this.urls.serverAdminUrl(serverUrl);
+  public getServerRestUrl = (serverUrl: string) => this.urls.serverRestUrl(serverUrl);
 
   public getItemDataUrl = async (itemId: string) => {
     let token = await this.getToken();

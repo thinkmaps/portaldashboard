@@ -1,4 +1,4 @@
-$d0: rgb(228,144,47);
+$d0: rgb(213,110,81);
 $d1: rgb(188,51,95);
 $d2: rgb(212,82,61);
 $d3: rgb(122,42,152);
@@ -6,14 +6,13 @@ $d4: rgb(99,166,238);
 $d5: rgb(114,173,92);
 $d6: rgb(156,194,92);
 
-$c0: rgb(253,239,191);
+$c0: rgb(238,194,157);
 $c1: rgb(243,229,171);
 $c2: rgb(202,215,174);
 $c3: rgb(162,202,178);
 $c4: rgb(122,188,181);
 $c5: rgb(40,161,188);
-$c6: rgb(0,130,190);
-
+$c6: rgb(10,140,220);
 
 $darkGrey: rgb(65,65,65);
 $mediumGrey: rgb(80,80,80);
@@ -163,7 +162,6 @@ svg{margin-right: 5px;}
   color:darken($c4, 10%);
 }
 .border-tool{
-  border: solid 1px;
   border-color: $c4;
 }
 
@@ -195,7 +193,6 @@ td{
   text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
   text-rendering: optimizeLegibility !important;
   -webkit-font-smoothing: antialiased !important;
-
 }
 
 .hundred{width: 250px;

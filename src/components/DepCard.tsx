@@ -1,15 +1,15 @@
 import * as React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Badge from 'react-bootstrap/Badge';
-import Button from 'react-bootstrap/Button';
 import Dependencies from "./Dependencies";
 
 // FontAwesome icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faCodeBranch } from '@fortawesome/free-solid-svg-icons'
+import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon } from '@fortawesome/free-solid-svg-icons'
 
 import { Dependency } from '../bo/Dependencies';
 import { AppManager, DashboardState } from "../bo/AppManager";
+import { DependencyButton } from "./buttons/DependencyButton";
 
 export interface IDepCardProps {
   key: string;
@@ -30,7 +30,6 @@ export default class DepCard extends React.Component<IDepCardProps, IDepCardStat
     this.state = { show: false, dependencies: [] }
   }
 
-  // const [show:boolean, setShow:any] = useState(false);
   private updateDependencies = (e: Dependency) => {
     // // 1. copy the current state
     const dependencies = [...this.state.dependencies];
@@ -69,7 +68,7 @@ export default class DepCard extends React.Component<IDepCardProps, IDepCardStat
           <div className={"bg-light hundred " + this.getBorderColor()}>
             <div className="h6 nw" title={this.props.depenedency.item!.title}>
               {this.getIcon()}
-              <Button onClick={this.handleShow} className="linkButton"><FontAwesomeIcon icon={faCodeBranch} className=" codeBranch" /></Button>
+              <DependencyButton onClick={this.handleShow} />
               {this.props.depenedency.item!.title}
             </div>
           </div>

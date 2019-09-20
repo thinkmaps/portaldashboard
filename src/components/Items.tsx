@@ -2,7 +2,9 @@ import * as React from 'react';
 import CardColumns from 'react-bootstrap/CardColumns'
 import ItemCard from "./ItemCard";
 import UserCard from "./UserCard";
-import { ServerCard } from "./ServerCard";
+import ToolCard from "./ToolCard";
+
+import ServerCard from "./ServerCard";
 import { IItem, IUser, IServer } from "../bo/RestInterfaces";
 import { DashboardState, AppManager } from "../bo/AppManager";
 
@@ -13,6 +15,7 @@ export interface IItemsProps {
 }
 
 export default class Items extends React.Component<IItemsProps> {
+
 
 
   private getCards = () => {
@@ -28,7 +31,11 @@ export default class Items extends React.Component<IItemsProps> {
       }
       // AppState is SERVER: return a ServerCard
       if (this.props.dashboardState === DashboardState.SERVER) {
-        return <ServerCard item={item as IServer} key={index.toString()} />;
+        return <ServerCard item={item as IServer} key={index.toString()} app={this.props.app} />;
+      }
+      // AppState is TOOL: return a ToolCard
+      if (this.props.dashboardState === DashboardState.TOOL) {
+        return <ToolCard item={item as IItem} key={index.toString()} app={this.props.app} />;
       }
       // // AppState is anything else: must be a ItemCard
       return <ItemCard item={item as IItem} key={index.toString()} type={this.props.dashboardState} app={this.props.app} />;

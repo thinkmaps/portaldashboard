@@ -1,13 +1,14 @@
 import * as React from 'react';
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import Dependencies from "./Dependencies";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faCodeBranch, faCode, faEye, faTools } from '@fortawesome/free-solid-svg-icons'
+import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faTools } from '@fortawesome/free-solid-svg-icons'
 import { IItem } from "../bo/RestInterfaces";
 import { Dependency } from '../bo/Dependencies';
 import { AppManager, DashboardState } from "../bo/AppManager";
+import { DependencyButton } from "./buttons/DependencyButton";
+import { ItemDataButton, ItemDetailsButton, RestLinkButton, ViewAppButton, ViewMapButton } from "./buttons/LinkButtons";
 
 export interface ItemCardProps {
   key: string;
@@ -64,14 +65,22 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
     if (this.props.type === DashboardState.TOOL) return "border-tool"
   }
 
-  private openJsonUrl = () => {
-    this.props.app.getItemDataUrl(this.props.item.id).then(url =>
-      window.open(url, "_blank")
-    )
-  }
+  private getButtons = () => {
 
-  private openPortalUrl = () => {
-    window.open(this.props.app.getItemPortalUrl(this.props.item.id), "_blank")
+    let buttons = [];
+    buttons.push(<DependencyButton key={buttons.length} onClick={this.handleShow} />);
+    buttons.push(<ItemDataButton key={buttons.length} app={this.props.app} item={this.props.item} />);
+    buttons.push(<ItemDetailsButton key={buttons.length} app={this.props.app} item={this.props.item} />)
+    if (this.props.type === DashboardState.APP) {
+      buttons.push(<ViewAppButton key={buttons.length} app={this.props.app} item={this.props.item} />);
+    }
+    if (this.props.type === DashboardState.MAP) {
+      buttons.push(<ViewMapButton key={buttons.length} app={this.props.app} item={this.props.item} />);
+    }
+    if (this.props.type === DashboardState.MAPIMAGELAYER || this.props.type === DashboardState.FEATAURELAYER) {
+      buttons.push(<RestLinkButton key={buttons.length} app={this.props.app} item={this.props.item} />);
+    }
+    return buttons;
   }
 
   public render() {
@@ -91,9 +100,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
             </Card.Text>
           </Card.Body>
           <Card.Footer>
-            <Button onClick={this.handleShow} className="linkButton"><FontAwesomeIcon icon={faCodeBranch} className="codeBranch" title="Show dependencies." /></Button>
-            <Button onClick={this.openJsonUrl} className="linkButton"><FontAwesomeIcon icon={faCode} className="codeBranch" title="Show JSON." /></Button>
-            <Button onClick={this.openPortalUrl} className="linkButton"><FontAwesomeIcon icon={faEye} className="codeBranch" title="Show Portal Item Details." /></Button>
+            {this.getButtons()}
           </Card.Footer>
         </ Card >
 

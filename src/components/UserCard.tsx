@@ -1,10 +1,11 @@
 import * as React from 'react';
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faUserClock, faUserTimes, faUserCog } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faUserClock, faUserTimes } from '@fortawesome/free-solid-svg-icons'
 import { IUser } from "../bo/RestInterfaces";
 import { AppManager } from "../bo/AppManager";
+import { ManageUserItemsButton } from "./buttons/LinkButtons";
+
 export interface IUserCardProps {
   app: AppManager;
   key: string;
@@ -52,9 +53,6 @@ export default class UserCard extends React.Component<IUserCardProps> {
     }
   }
 
-  private nothing = () => {
-    window.open(this.props.app.getUserContentUrl(this.props.item.username), "_blank")
-  }
 
   public render() {
     return (
@@ -73,7 +71,7 @@ export default class UserCard extends React.Component<IUserCardProps> {
           </Card.Text>
         </Card.Body>
         <Card.Footer className={this.getColor() + " " + this.getBorderColor()}>
-          <Button onClick={this.nothing} className="linkButton"><FontAwesomeIcon icon={faUserCog} className="codeBranch" title="Manage user items." /></Button>
+          <ManageUserItemsButton app={this.props.app} user={this.props.item} />
         </Card.Footer>
       </Card >);
   }

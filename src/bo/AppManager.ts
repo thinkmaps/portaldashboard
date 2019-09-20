@@ -48,7 +48,10 @@ export class AppManager {
   public getItemDataUrl = (itemId: string) => this.arcgis.getItemDataUrl(itemId);
   public getItemPortalUrl = (itemId: string) => this.arcgis.getItemPortalUrl(itemId);
   public getUserContentUrl = (user: string) => this.arcgis.getUserContentUrl(user);
-
+  public getWebmapViewerUrl = (itemId: string) => this.arcgis.getWebmapViewerUrl(itemId);
+  public getServerManagerUrl = (serverUrl: string) => this.arcgis.getServerManagerUrl(serverUrl);
+  public getServerAdminUrl = (serverUrl: string) => this.arcgis.getServerAdminUrl(serverUrl);
+  public getServerRestUrl = (serverUrl: string) => this.arcgis.getServerRestUrl(serverUrl);
 
   public getItem = (callback: any, itemId: string) => {
     this.arcgis.getItem(itemId).then(item => callback(item))

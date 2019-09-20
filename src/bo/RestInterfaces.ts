@@ -10,6 +10,7 @@ export interface IServer {
   id: string;
   name: string;
   url: string;
+  adminUrl: string;
   isHosted: boolean;
   serverType: string;
   serverRole: string;
@@ -23,6 +24,7 @@ export interface IItem {
   title: string;
   owner: string;
   created: number;
+  url: string;
 }
 
 // https://developers.arcgis.com/rest/users-groups-and-items/users.htm

@@ -116,12 +116,12 @@ svg {
 }
 
 .app {
-  color: #fbe38e;
+  color: #e6a772;
 }
 
 .border-app {
   border: solid 1px;
-  border-color: #fdefbf;
+  border-color: #eec29d;
 }
 
 .map {
@@ -156,7 +156,6 @@ svg {
 }
 
 .border-tool {
-  border: solid 1px;
   border-color: #7abcb5;
 }
 
@@ -169,11 +168,11 @@ svg {
 }
 
 .server {
-  color: #005f8b;
+  color: #086dab;
 }
 
 .border-server {
-  border-color: #0082be;
+  border-color: #0a8cdc;
 }
 
 td {
@@ -246,7 +245,7 @@ td .border-danger {
 }
 
 .portal {
-  color: #e4902f !important;
+  color: #d56e51 !important;
   font-size: 1.2rem;
 }
 

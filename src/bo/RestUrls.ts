@@ -12,6 +12,9 @@ export default class RestUrls {
   // Servers
   // https://developers.arcgis.com/rest/users-groups-and-items/servers.htm
   public serversUrl = (orgId: string) => `${this.url}/sharing/rest/portals/${orgId}/servers`;
+  public serverManagerUrl = (serverUrl: string) => `${serverUrl}/manager`;
+  public serverAdminUrl = (serverUrl: string) => `${serverUrl}/admin`;
+  public serverRestUrl = (serverUrl: string) => `${serverUrl}/rest`;
 
   // Item
   // https://developers.arcgis.com/rest/users-groups-and-items/item.htm
@@ -19,6 +22,7 @@ export default class RestUrls {
   // https://developers.arcgis.com/rest/users-groups-and-items/item-data.htm
   public itemDataUrl = (id: string) => `${this.url}/sharing/rest/content/items/${id}/data`;
   public itemPortalUrl = (itemId: string) => `${this.url}/home/item.html?id=${itemId}`;
+  public webmapViewerUrl = (itemId: string) => `${this.url}/home/webmap/viewer.html?webmap=${itemId}`;
 
   // Search
   // https://developers.arcgis.com/rest/users-groups-and-items/search.htm

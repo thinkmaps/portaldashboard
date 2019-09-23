@@ -1,16 +1,16 @@
 {
   "portals": [
     {
-      "name": "A-Umgebung",
-      "url": "https://se1-gis-a11.ads.schwarz/portal"
-    },
-    {
       "name": "Q-Umgebung",
       "url": "https://maps-q.kaufland.com/portal"
     },
     {
       "name": "P-Umgebung",
       "url": "https://maps.kaufland.com/portal"
+    },
+    {
+      "name": "A-Umgebung",
+      "url": "https://se1-gis-a11.ads.schwarz/portal"
     }
   ],
   "showApps": true,

@@ -69,43 +69,43 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
     if (state === DashboardState.APP) {
       this.app.searchApps((apps: Array<IItem>) => {
-        this.setState({ items: apps, filteredItems: apps, state: state });
+        this.setState({ items: apps, state: state });
         this.filter();
       });
     }
     if (state === DashboardState.MAP) {
       this.app.searchMaps((maps: Array<IItem>) => {
-        this.setState({ items: maps, filteredItems: maps, state: state });
+        this.setState({ items: maps, state: state });
         this.filter();
       });
     }
     if (state === DashboardState.MAPIMAGELAYER) {
       this.app.searchMapLayers((mapLayers: Array<IItem>) => {
-        this.setState({ items: mapLayers, filteredItems: mapLayers, state: state });
+        this.setState({ items: mapLayers, state: state });
         this.filter();
       });
     }
     if (state === DashboardState.FEATAURELAYER) {
       this.app.searchFeatureLayers((featureLayers: Array<IItem>) => {
-        this.setState({ items: featureLayers, filteredItems: featureLayers, state: state });
+        this.setState({ items: featureLayers, state: state });
         this.filter();
       });
     }
     if (state === DashboardState.TOOL) {
       this.app.searchTools((tools: Array<IItem>) => {
-        this.setState({ items: tools, filteredItems: tools, state: state });
+        this.setState({ items: tools, state: state });
         this.filter();
       });
     }
     if (state === DashboardState.USER) {
       this.app.searchUsers((users: Array<IUser>) => {
-        this.setState({ items: users, filteredItems: users, state: state });
+        this.setState({ items: users, state: state });
         this.filter();
       });
     }
     if (state === DashboardState.SERVER) {
       this.app.servers((server: Array<IServer>) => {
-        this.setState({ items: server, filteredItems: server, state: state });
+        this.setState({ items: server, state: state });
       });
     }
   }

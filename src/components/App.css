@@ -256,4 +256,10 @@ td .border-danger {
 .disabled {
   color: #646464;
 }
+
+.itemstatus {
+  font-size: 1.2rem;
+  margin-right: -10px;
+  float: right;
+}
 /*# sourceMappingURL=App.css.map */

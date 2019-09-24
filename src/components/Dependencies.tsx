@@ -1,7 +1,5 @@
 import * as React from 'react';
-
 import ItemCard from "./ItemCard";
-import DepCard from "./DepCard";
 import { AppManager } from "../bo/AppManager";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -42,7 +40,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
     return this.props.dependencies.filter(d => d.id === itemId)[0];
   }
 
-  private renderDependElements = (ids: Set<string>, renderFunction: any) => {
+  private renderDependendElements = (ids: Set<string>, renderFunction: any) => {
     return Array.from(ids)
       // map id to dependency
       .map(id => this.getDependencyFromDependencies(id))
@@ -60,7 +58,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
     let table = (<table key={this.getKey()}>
       <tbody>
         <tr>
-          <td align="right">{this.renderDependElements(dependency.parents, this.getParents)}</td>
+          <td align="right">{this.renderDependendElements(dependency.parents, this.getParents)}</td>
           <td>{this.getDepCard(dependency)}</td>
         </tr>
       </tbody>
@@ -74,7 +72,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
       <tbody>
         <tr>
           <td>{this.getDepCard(dependency)}</td>
-          <td>{this.renderDependElements(dependency.children, this.getChildren)}</td>
+          <td>{this.renderDependendElements(dependency.children, this.getChildren)}</td>
         </tr>
       </tbody>
     </table>);
@@ -85,7 +83,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
   private getDepCard = (dependency: Dependency) => {
     if (dependency.item) {
       return (
-        <DepCard depenedency={dependency} key={dependency.id} type={this.getAppState(dependency.item.type)} app={this.props.app}></DepCard>
+        <ItemCard item={dependency.item} dependency={dependency} key={dependency.id} type={this.getAppState(dependency.item.type)} app={this.props.app} mode="badge" />
       )
     }
     return <div className="border-danger"><FontAwesomeIcon icon={faSkullCrossbones} className="text-danger" />Error: missing item!</div>
@@ -100,9 +98,9 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
     return (<table>
       <tbody>
         <tr>
-          <td className="sub" align="right">{this.renderDependElements(root.parents, this.getParents)}</td>
-          <td className="main"><ItemCard item={root.item!} key={"dependencies" + this.counter} type={this.getAppState(root.item!.type)} app={this.props.app} /></td>
-          <td className="sub">{this.renderDependElements(root.children, this.getChildren)}</td>
+          <td className="sub" align="right">{this.renderDependendElements(root.parents, this.getParents)}</td>
+          <td className="main"><ItemCard item={root.item!} dependency={undefined} key={"dependencies" + this.counter} type={this.getAppState(root.item!.type)} app={this.props.app} mode="card" /></td>
+          <td className="sub">{this.renderDependendElements(root.children, this.getChildren)}</td>
         </tr>
       </tbody>
     </table>);

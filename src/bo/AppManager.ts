@@ -9,7 +9,7 @@ export enum DashboardState {
   APP,
   MAP,
   MAPIMAGELAYER,
-  FEATAURELAYER,
+  FEATURELAYER,
   TOOL,
   USER,
   SERVER,
@@ -37,6 +37,11 @@ export class AppManager {
         callback(configResponse.data)
       }
     });
+  }
+
+  public getKey = () => {
+    // https://gist.github.com/gordonbrander/2230317
+    return '_' + Math.random().toString(36).substr(2, 9);
   }
 
   public servers = (callback: any): void => {

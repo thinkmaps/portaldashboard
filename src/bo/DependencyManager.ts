@@ -41,16 +41,11 @@ export default class DependencyManager {
     let d: Dependency;
 
     let item = await this.arcgis.getItem(itemId);
-
-    if (item.error) {
-      d = new Dependency(itemId, undefined);
-    } else {
-      d = new Dependency(itemId, item);
-    }
-
+    if (item.error) item = undefined;
+    d = new Dependency(itemId, item);
 
     let children = await this.searchAllItems(itemId, this.arcgis.itemDependencies);
-    // if (d.item) console.log(d.item.title, children);
+
     children.forEach(child => {
       if (child.error) {
         d.hasErrors = true;
@@ -62,7 +57,7 @@ export default class DependencyManager {
     });
 
     let parents = await this.searchAllItems(itemId, this.arcgis.itemDependenciesTo);
-    // if (d.item) console.log(d.item.title, parents);
+
     parents.forEach(parent => {
       if (parent.error) {
         d.hasErrors = true;
@@ -85,10 +80,6 @@ export default class DependencyManager {
       this.dependencyIds.add(itemId);
 
       let d = await this.getDependencies(itemId);
-      // if (d.item) {
-      //   console.table(d.item.title, d.parents.size, d.children.size);
-      // }
-      // console.log(d);
 
       if (searchForChildren) {
         d.children.forEach(async (childId: string) => {

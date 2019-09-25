@@ -22,25 +22,34 @@ export class ArcGis {
     return (token !== undefined)
   }
 
+  // Misc
+  public getItemPortalUrl = (itemId: string) => this.urls.itemPortalUrl(itemId);
+  public getWebmapViewerUrl = (itemId: string) => this.urls.webmapViewerUrl(itemId);
+
   // Servers
-  public servers = async (orgId: string) => {
-    return await this.getWithTokenAsJson(this.urls.serversUrl(orgId));
-  }
+  public servers = async (orgId: string) =>
+    await this.getWithTokenAsJson(this.urls.serversUrl(orgId));
+  public getServerManagerUrl = (serverUrl: string) => this.urls.serverManagerUrl(serverUrl);
+  public getServerAdminUrl = (serverUrl: string) => this.urls.serverAdminUrl(serverUrl);
+  public getServerRestUrl = (serverUrl: string) => this.urls.serverRestUrl(serverUrl);
 
   // Search
-  public search = async (term: string, start: number, num: number) => {
-    return await this.getWithTokenAsJson(this.urls.searchUrl(start, num, term));
-  }
+  public search = async (term: string, start: number, num: number) =>
+    await this.getWithTokenAsJson(this.urls.searchUrl(start, num, term));
 
   // Item
-  public getItem = async (id: string) => {
-    return await this.getWithTokenAsJson(this.urls.itemUrl(id));
+  public getItem = async (id: string) =>
+    await this.getWithTokenAsJson(this.urls.itemUrl(id));
+  public getItemDataUrl = async (itemId: string) => {
+    let token = await this.getToken();
+    let url = this.addJsonParameter(this.urls.itemDataUrl(itemId));
+    return this.addTokenParameter(url, token);
   }
 
   // Users
-  public users = async (orgId: string, start: number, num: number) => {
-    return await this.getWithTokenAsJson(this.urls.usersUrl(orgId, start, num));
-  }
+  public users = async (orgId: string, start: number, num: number) =>
+    await this.getWithTokenAsJson(this.urls.usersUrl(orgId, start, num));
+  public getUserContentUrl = (user: string) => this.urls.userContentUrl(user);
 
   // Dependencies
   public itemDependencies = async (itemId: string, start: number, num: number): Promise<IDependencyResponse> => {
@@ -94,18 +103,9 @@ export class ArcGis {
   // #endregion
 
 
-  public getUserContentUrl = (user: string) => this.urls.userContentUrl(user);
-  public getItemPortalUrl = (itemId: string) => this.urls.itemPortalUrl(itemId);
-  public getWebmapViewerUrl = (itemId: string) => this.urls.webmapViewerUrl(itemId);
-  public getServerManagerUrl = (serverUrl: string) => this.urls.serverManagerUrl(serverUrl);
-  public getServerAdminUrl = (serverUrl: string) => this.urls.serverAdminUrl(serverUrl);
-  public getServerRestUrl = (serverUrl: string) => this.urls.serverRestUrl(serverUrl);
 
-  public getItemDataUrl = async (itemId: string) => {
-    let token = await this.getToken();
-    let url = this.addJsonParameter(this.urls.itemDataUrl(itemId));
-    return this.addTokenParameter(url, token);
-  }
+
+
 
 
   private getWithTokenAsJson = async (url: string) => {

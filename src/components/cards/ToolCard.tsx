@@ -2,9 +2,9 @@ import * as React from 'react';
 import Card from 'react-bootstrap/Card';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTools } from '@fortawesome/free-solid-svg-icons'
-import { IItem } from "../bo/RestInterfaces";
-import { AppManager } from '../bo/AppManager';
-import { ItemDetailsButton, RestLinkButton } from "./buttons/LinkButtons";
+import { IItem } from "../../bo/RestInterfaces";
+import { AppManager } from '../../bo/AppManager';
+import { ItemDetailsButton, RestLinkButton } from "../buttons/LinkButtons";
 
 interface IToolCardProps {
   key: string;

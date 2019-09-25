@@ -4,17 +4,19 @@ import Badge from 'react-bootstrap/Badge';
 import Spinner from "react-bootstrap/Spinner"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faTools, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
-import { IItem } from "../bo/RestInterfaces";
-import { Dependency } from '../bo/Dependencies';
-import { AppManager, DashboardState } from "../bo/AppManager";
-import { DependencyButton } from "./buttons/DependencyButton";
-import { ItemDataButton, ItemDetailsButton, RestLinkButton, ViewAppButton, ViewMapButton } from "./buttons/LinkButtons";
-import DependencyDialog from "./DependencyDialog";
+import { IItem } from "../../bo/RestInterfaces";
+import { Dependency } from '../../bo/Dependencies';
+import { AppManager, DashboardState } from "../../bo/AppManager";
+import { DependencyButton } from "../buttons/DependencyButton";
+import { ItemDataButton, ItemDetailsButton, RestLinkButton, ViewAppButton, ViewMapButton } from "../buttons/LinkButtons";
+import DependencyDialog from "../DependencyDialog";
 
 export interface ItemCardProps {
   key: string;
   item: IItem;
-  dependency: Dependency | undefined;
+  parents: number;
+  children: number;
+  // dependency: Dependency | undefined;
   app: AppManager;
   type: DashboardState;
   mode: string; // "card" or "badge"
@@ -54,7 +56,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
     if (this.props.type === DashboardState.APP) return <FontAwesomeIcon icon={faTabletAlt} className="app" />
     if (this.props.type === DashboardState.MAP) return <FontAwesomeIcon icon={faMap} className="map" />
     if (this.props.type === DashboardState.MAPIMAGELAYER) return <FontAwesomeIcon icon={faLayerGroup} className="mapLayer" />
-    if (this.props.type === DashboardState.FEATAURELAYER) return <FontAwesomeIcon icon={faDrawPolygon} className="featureLayer" />
+    if (this.props.type === DashboardState.FEATURELAYER) return <FontAwesomeIcon icon={faDrawPolygon} className="featureLayer" />
     if (this.props.type === DashboardState.TOOL) return <FontAwesomeIcon icon={faTools} className="tool" />
   }
 
@@ -62,7 +64,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
     if (this.props.type === DashboardState.APP) return "border-app"
     if (this.props.type === DashboardState.MAP) return "border-map"
     if (this.props.type === DashboardState.MAPIMAGELAYER) return "border-mapLayer"
-    if (this.props.type === DashboardState.FEATAURELAYER) return "border-featureLayer"
+    if (this.props.type === DashboardState.FEATURELAYER) return "border-featureLayer"
     if (this.props.type === DashboardState.TOOL) return "border-tool"
   }
 
@@ -78,7 +80,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
     if (this.props.type === DashboardState.MAP) {
       buttons.push(<ViewMapButton key={buttons.length} app={this.props.app} item={this.props.item} />);
     }
-    if (this.props.type === DashboardState.MAPIMAGELAYER || this.props.type === DashboardState.FEATAURELAYER) {
+    if (this.props.type === DashboardState.MAPIMAGELAYER || this.props.type === DashboardState.FEATURELAYER) {
       buttons.push(<RestLinkButton key={buttons.length} app={this.props.app} item={this.props.item} />);
     }
     return buttons;
@@ -119,9 +121,9 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
 
     // compressed card for dependencies
     if (this.props.mode === "badge") {
-      if (this.props.dependency && this.props.item) {
+      if (this.props.item) {
         return (<div className="badgeContainerC">
-          <Badge variant="secondary" className="badgeContainer" title={this.props.dependency.parents.size + " parents / " + this.props.dependency.children.size + " children"}>{this.props.dependency.parents.size + "/" + this.props.dependency.children.size}</Badge>
+          <Badge variant="secondary" className="badgeContainer" title={this.props.parents + " parents / " + this.props.children + " children"}>{this.props.parents + "/" + this.props.children}</Badge>
           <div className={"bg-light hundred " + this.getBorderColor()}>
             <div className="h6 nw" title={this.props.item.title}>
               {this.getIcon()}

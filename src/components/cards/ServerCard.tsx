@@ -2,9 +2,9 @@ import * as React from 'react';
 import Card from 'react-bootstrap/Card';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faServer } from '@fortawesome/free-solid-svg-icons'
-import { IServer } from "../bo/RestInterfaces";
-import { ServerManagerButton, ServerAdminButton, ServerRestButton } from './buttons/LinkButtons';
-import { AppManager } from '../bo/AppManager';
+import { IServer } from "../../bo/RestInterfaces";
+import { ServerManagerButton, ServerAdminButton, ServerRestButton } from '../buttons/LinkButtons';
+import { AppManager } from '../../bo/AppManager';
 
 interface IServerCardProps {
   key: string;
@@ -15,6 +15,7 @@ interface IServerCardProps {
 export default class ServerCard extends React.Component<IServerCardProps> {
 
   public render() {
+
     return (
       <Card className="bg-light border-server">
         <Card.Body>

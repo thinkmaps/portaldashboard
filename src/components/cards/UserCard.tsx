@@ -2,9 +2,9 @@ import * as React from 'react';
 import Card from 'react-bootstrap/Card';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faUserClock, faUserTimes } from '@fortawesome/free-solid-svg-icons'
-import { IUser } from "../bo/RestInterfaces";
-import { AppManager } from "../bo/AppManager";
-import { ManageUserItemsButton } from "./buttons/LinkButtons";
+import { IUser } from "../../bo/RestInterfaces";
+import { AppManager } from "../../bo/AppManager";
+import { ManageUserItemsButton } from "../buttons/LinkButtons";
 
 export interface IUserCardProps {
   app: AppManager;

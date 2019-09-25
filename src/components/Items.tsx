@@ -1,10 +1,10 @@
 import * as React from 'react';
 import CardColumns from 'react-bootstrap/CardColumns'
-import ItemCard from "./ItemCard";
-import UserCard from "./UserCard";
-import ToolCard from "./ToolCard";
+import ItemCard from "./cards/ItemCard";
+import UserCard from "./cards/UserCard";
+import ToolCard from "./cards/ToolCard";
 
-import ServerCard from "./ServerCard";
+import ServerCard from "./cards/ServerCard";
 import { IItem, IUser, IServer } from "../bo/RestInterfaces";
 import { DashboardState, AppManager } from "../bo/AppManager";
 
@@ -15,8 +15,6 @@ export interface IItemsProps {
 }
 
 export default class Items extends React.Component<IItemsProps> {
-
-
 
   private getCards = () => {
     return this.props.items.map((item: IItem | IUser | IServer, index) => {
@@ -38,13 +36,13 @@ export default class Items extends React.Component<IItemsProps> {
         return <ToolCard item={item as IItem} key={index.toString()} app={this.props.app} />;
       }
       // // AppState is anything else: must be a ItemCard
-      return <ItemCard item={item as IItem} key={index.toString()} type={this.props.dashboardState} app={this.props.app} />;
+      return <ItemCard item={item as IItem} parents={0} children={0} key={index.toString()} type={this.props.dashboardState} app={this.props.app} mode="card" />;
     });
   }
 
   public render() {
     return (
-      <CardColumns> {this.getCards()}</CardColumns >
+      <CardColumns>{this.getCards()}</CardColumns >
     );
   }
 

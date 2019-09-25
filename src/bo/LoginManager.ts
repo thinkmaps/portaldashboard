@@ -17,7 +17,7 @@ export default class LoginManager {
       password = LoginManager.decrypt(password);
 
       // create instance of ArcGis
-      let arcgis = new ArcGis(url, username!, password!);
+      let arcgis = new ArcGis(url, username, password);
 
       // check the credentials
       arcgis.hasValidCredentials().then(hasValidCredentials => {
@@ -30,7 +30,6 @@ export default class LoginManager {
     } else {
       // if there are no username and password or the credentials are invalid
       callback(undefined);
-
     }
   }
 
@@ -41,9 +40,9 @@ export default class LoginManager {
   }
 
   private static getUsername = (url: string) =>
-    window.localStorage.getItem(`${LoginManager.encrypt(url)}un`);
+    window.localStorage.getItem(`${LoginManager.encrypt(url)}un`) || "";
   private static getPassword = (url: string) =>
-    window.localStorage.getItem(`${LoginManager.encrypt(url)}pw`);
+    window.localStorage.getItem(`${LoginManager.encrypt(url)}pw`) || "";
   private static setUsername = (url: string, username: string) =>
     window.localStorage.setItem(`${LoginManager.encrypt(url)}un`, LoginManager.encrypt(username));
   private static setPassword = (url: string, password: string) =>

@@ -1,11 +1,9 @@
 import * as React from 'react';
-
-import ItemCard from "./ItemCard";
-import DepCard from "./DepCard";
+import ItemCard from "./cards/ItemCard";
 import { AppManager } from "../bo/AppManager";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSkullCrossbones } from '@fortawesome/free-solid-svg-icons'
+import { faBug } from '@fortawesome/free-solid-svg-icons'
 
 import { Dependency } from '../bo/Dependencies';
 import { DashboardState } from "../bo/AppManager";
@@ -29,7 +27,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
     if (key === "Web Map") return DashboardState.MAP;
     if (key === "Web Mapping Application") return DashboardState.APP;
     if (key === "Map Service") return DashboardState.MAPIMAGELAYER;
-    if (key === "Feature Service") return DashboardState.FEATAURELAYER;
+    if (key === "Feature Service") return DashboardState.FEATURELAYER;
     return DashboardState.UNKNOWN;
   }
 
@@ -42,7 +40,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
     return this.props.dependencies.filter(d => d.id === itemId)[0];
   }
 
-  private renderDependElements = (ids: Set<string>, renderFunction: any) => {
+  private renderDependendElements = (ids: Set<string>, renderFunction: any) => {
     return Array.from(ids)
       // map id to dependency
       .map(id => this.getDependencyFromDependencies(id))
@@ -60,7 +58,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
     let table = (<table key={this.getKey()}>
       <tbody>
         <tr>
-          <td align="right">{this.renderDependElements(dependency.parents, this.getParents)}</td>
+          <td align="right">{this.renderDependendElements(dependency.parents, this.getParents)}</td>
           <td>{this.getDepCard(dependency)}</td>
         </tr>
       </tbody>
@@ -74,7 +72,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
       <tbody>
         <tr>
           <td>{this.getDepCard(dependency)}</td>
-          <td>{this.renderDependElements(dependency.children, this.getChildren)}</td>
+          <td>{this.renderDependendElements(dependency.children, this.getChildren)}</td>
         </tr>
       </tbody>
     </table>);
@@ -85,10 +83,10 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
   private getDepCard = (dependency: Dependency) => {
     if (dependency.item) {
       return (
-        <DepCard depenedency={dependency} key={dependency.id} type={this.getAppState(dependency.item.type)} app={this.props.app}></DepCard>
+        <ItemCard item={dependency.item} parents={dependency.parents.size} children={dependency.children.size} key={dependency.id} type={this.getAppState(dependency.item.type)} app={this.props.app} mode="badge" />
       )
     }
-    return <div className="border-danger"><FontAwesomeIcon icon={faSkullCrossbones} className="text-danger" />Error: missing item!</div>
+    return <div className="border-danger"><FontAwesomeIcon icon={faBug} className="text-danger" />Error: missing item!</div>
   }
 
 
@@ -100,9 +98,9 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
     return (<table>
       <tbody>
         <tr>
-          <td className="sub" align="right">{this.renderDependElements(root.parents, this.getParents)}</td>
-          <td className="main"><ItemCard item={root.item!} key={"dependencies" + this.counter} type={this.getAppState(root.item!.type)} app={this.props.app} /></td>
-          <td className="sub">{this.renderDependElements(root.children, this.getChildren)}</td>
+          <td className="sub" align="right">{this.renderDependendElements(root.parents, this.getParents)}</td>
+          <td className="main"><ItemCard item={root.item!} parents={0} children={0} key={"dependencies" + this.counter} type={this.getAppState(root.item!.type)} app={this.props.app} mode="card" /></td>
+          <td className="sub">{this.renderDependendElements(root.children, this.getChildren)}</td>
         </tr>
       </tbody>
     </table>);

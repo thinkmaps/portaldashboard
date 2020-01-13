@@ -3,7 +3,7 @@ import Card from "react-bootstrap/Card";
 import Badge from 'react-bootstrap/Badge';
 import Spinner from "react-bootstrap/Spinner"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faTools, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
+import { faTabletAlt, faMap, faLayerGroup, faDrawPolygon, faTools, faCheckCircle, faBug } from '@fortawesome/free-solid-svg-icons'
 import { IItem } from "../../bo/RestInterfaces";
 import { Dependency } from '../../bo/Dependencies';
 import { AppManager, DashboardState } from "../../bo/AppManager";
@@ -16,10 +16,11 @@ export interface ItemCardProps {
   item: IItem;
   parents: number;
   children: number;
-  // dependency: Dependency | undefined;
   app: AppManager;
   type: DashboardState;
   mode: string; // "card" or "badge"
+  check: number;
+  reportState: any;
 }
 
 interface IItemCardState {
@@ -29,6 +30,9 @@ interface IItemCardState {
 
 export default class ItemCard extends React.Component<ItemCardProps, IItemCardState> {
 
+  private check: number = 0;
+  private hasDependencyErrors = false;
+
   constructor(props: ItemCardProps) {
     super(props);
     this.state = { show: false, dependencies: [] }
@@ -36,6 +40,9 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
 
 
   private updateDependencies = (e: Dependency) => {
+
+    if (e.hasErrors) { this.hasDependencyErrors = true };
+    this.hasDependencyErrors ? this.props.reportState(this.props.item, 3) : this.props.reportState(this.props.item, 2);
     // // 1. copy the current state
     const dependencies = [...this.state.dependencies];
     // // 2. add value
@@ -86,13 +93,25 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
     return buttons;
   }
 
-  // private getCheckUI = () => {
-  //   if (this.props.checkState === checkState.none) return <div></div>
-  //   if (this.props.checkState === checkState.inProgress) return <Spinner animation="border" role="status" variant="secondary" />
-  //   if (this.props.checkState === checkState.success) return <FontAwesomeIcon icon={faCheckCircle} className="text-success" />
-  //   if (this.props.checkState === checkState.error) return <FontAwesomeIcon icon={faExclamationCircle} className="text-danger" />
+  public componentDidUpdate = () => {
+    // console.log("componentDidUpdate", this.props.check, this.check);
+    if (this.check !== 1 && this.props.check === 1) {
+      this.check = this.props.check;
+      console.log("Must do something", this.props.check);
+      this.props.app.getAllDependencies(this.updateDependencies, this.props.item.id);
+    }
+  }
 
-  // }
+  private getCheckUI = () => {
+
+    if (this.props.check === 0) return <div></div>;
+    if (this.props.check === 1) return <Spinner animation="border" role="status" variant="secondary" />
+    if (this.props.check === 2) return <FontAwesomeIcon icon={faCheckCircle} className="text-success" />
+    if (this.props.check === 3) return <FontAwesomeIcon icon={faBug} className="text-danger" />
+    return <div></div>
+
+
+  }
 
   private getCard = () => {
 
@@ -114,6 +133,7 @@ export default class ItemCard extends React.Component<ItemCardProps, IItemCardSt
         <Card.Footer>
           {this.getButtons()}
           <div className="itemstatus">
+            {this.getCheckUI()}
           </div>
         </Card.Footer>
       </ Card >)

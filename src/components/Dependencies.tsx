@@ -83,7 +83,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
   private getDepCard = (dependency: Dependency) => {
     if (dependency.item) {
       return (
-        <ItemCard item={dependency.item} parents={dependency.parents.size} children={dependency.children.size} key={dependency.id} type={this.getAppState(dependency.item.type)} app={this.props.app} mode="badge" />
+        <ItemCard item={dependency.item} parents={dependency.parents.size} children={dependency.children.size} key={dependency.id} type={this.getAppState(dependency.item.type)} app={this.props.app} mode="badge" check={0} reportState={undefined} />
       )
     }
     return <div className="border-danger"><FontAwesomeIcon icon={faBug} className="text-danger" />Error: missing item!</div>
@@ -99,7 +99,7 @@ export default class Dependencies extends React.Component<IDependenciesProps> {
       <tbody>
         <tr>
           <td className="sub" align="right">{this.renderDependendElements(root.parents, this.getParents)}</td>
-          <td className="main"><ItemCard item={root.item!} parents={0} children={0} key={"dependencies" + this.counter} type={this.getAppState(root.item!.type)} app={this.props.app} mode="card" /></td>
+          <td className="main"><ItemCard item={root.item!} parents={0} children={0} key={"dependencies" + this.counter} type={this.getAppState(root.item!.type)} app={this.props.app} mode="card" check={0} reportState={undefined} /></td>
           <td className="sub">{this.renderDependendElements(root.children, this.getChildren)}</td>
         </tr>
       </tbody>
